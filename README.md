@@ -12,7 +12,7 @@ When using Japanese IME (Input Method Editor) in Slite, composed text appears du
 
 ### Chrome / Edge
 
-1. Download `slite-ime-fix-chrome-vX.X.X.zip` from [Releases](https://github.com/Xantibody/slite-ime-fix/releases)
+1. Download `slime-chrome-vX.X.X.zip` from [Releases](https://github.com/Xantibody/slime/releases)
 2. Extract the zip file
 3. Open `chrome://extensions/` (or `edge://extensions/`)
 4. Enable "Developer mode" (toggle in top-right corner)
@@ -21,7 +21,7 @@ When using Japanese IME (Input Method Editor) in Slite, composed text appears du
 
 ### Firefox
 
-1. Download `slite-ime-fix-firefox-vX.X.X.xpi` from [Releases](https://github.com/Xantibody/slite-ime-fix/releases)
+1. Download `slime-firefox-vX.X.X.xpi` from [Releases](https://github.com/Xantibody/slime/releases)
 2. Open Firefox and drag the `.xpi` file into the browser window
 3. Click "Add" when prompted
 
@@ -33,26 +33,26 @@ The flake's `packages.default` is the xpi signed by AMO, so it installs into a
 regular Firefox:
 
 ```nix
-inputs.slite-ime-fix.url = "github:Xantibody/slite-ime-fix";
+inputs.slime.url = "github:Xantibody/slime";
 
 programs.firefox.profiles.<profile>.extensions.packages = [
-  inputs.slite-ime-fix.packages.${system}.default
+  inputs.slime.packages.${system}.default
 ];
 ```
 
 ### Build from source
 
 ```bash
-git clone https://github.com/Xantibody/slite-ime-fix.git
-cd slite-ime-fix
+git clone https://github.com/Xantibody/slime.git
+cd slime
 pnpm install
 pnpm build
 ```
 
 This generates:
 
-- `dist/slite-ime-fix-chrome.zip` - Chrome/Edge extension
-- `dist/slite-ime-fix-firefox.xpi` - Firefox extension
+- `dist/slime-chrome.zip` - Chrome/Edge extension
+- `dist/slime-firefox.xpi` - Firefox extension
 - `dist/chrome/` - Unpacked Chrome extension (for development)
 - `dist/firefox/` - Unpacked Firefox extension (for development)
 

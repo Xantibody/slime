@@ -33,7 +33,7 @@
         # 検査に使う道具立て。devShell と CI の両方がこれ一つを読む。
         # 一覧をワークフロー側にも書くと、片方だけ足して片方で落ちる
         toolchain = pkgs.buildEnv {
-          name = "slite-ime-fix-toolchain";
+          name = "slime-toolchain";
           paths = [
             pkgs.nodejs_22
             pkgs.pnpm
@@ -56,7 +56,7 @@
         # (空の URL で fetchurl を評価すると flake 全体の評価が落ちる)
         // pkgs.lib.optionalAttrs (amoUrl != "") {
           default = pkgs.stdenv.mkDerivation {
-            name = "slite-ime-fix-firefox-xpi";
+            name = "slime-firefox-xpi";
 
             src = pkgs.fetchurl {
               url = amoUrl;

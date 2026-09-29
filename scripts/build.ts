@@ -37,12 +37,12 @@ const CONFIGS: Readonly<Record<Target, TargetConfig>> = {
   chrome: {
     manifest: generateChromeManifest(VERSION),
     background: "src/background.chrome.ts",
-    packagePath: "dist/slite-ime-fix-chrome.zip",
+    packagePath: "dist/slime-chrome.zip",
   },
   firefox: {
     manifest: generateFirefoxManifest(VERSION),
     background: "src/background.firefox.ts",
-    packagePath: "dist/slite-ime-fix-firefox.xpi",
+    packagePath: "dist/slime-firefox.xpi",
   },
 };
 

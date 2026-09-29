@@ -122,6 +122,8 @@ export function generateFirefoxManifest(version: string): FirefoxManifest {
     },
     browser_specific_settings: {
       gecko: {
+        // AIDEV-NOTE: keeps the repository's old name (now slime) on purpose.
+        // AMO ties a listing to this ID forever; changing it makes a new add-on
         id: "slite-ime-fix@example.com",
         strict_min_version: "109.0",
         // AMO refuses new add-ons that do not declare this. The extension

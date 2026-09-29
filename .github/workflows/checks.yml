@@ -41,8 +41,8 @@ jobs:
         with:
           name: extensions
           path: |
-            dist/slite-ime-fix-chrome.zip
-            dist/slite-ime-fix-firefox.xpi
+            dist/slime-chrome.zip
+            dist/slime-firefox.xpi
           retention-days: 7
 
 # NOTE: pnpm e2e (agent-browser) はここに無い。実ブラウザを1つ落としてくるので
