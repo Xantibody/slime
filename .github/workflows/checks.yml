@@ -1,0 +1,50 @@
+name: Checks
+
+# PR でもリリースでも同じ検査を通す。ここ一つに書いて両方から呼ぶ。
+# 片方にだけ足すと、通したつもりの検査がもう片方をすり抜ける
+on:
+  workflow_call:
+
+# 直列に並べると全部がいちばん遅い1つの後ろにつながる。
+# 独立したジョブに分ければ待ち時間はいちばん遅いジョブの分だけになる
+jobs:
+  static:
+    name: Format / Lint / Types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm run fmt:check
+      - run: pnpm run lint
+      - run: pnpm run typecheck
+      # 使われていない export・ファイル・依存。oxlint は1ファイルしか見ないので拾えない
+      - run: pnpm run knip
+
+  test:
+    name: Test (jsdom)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm run test:run
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm run build
+
+      # 生成物が壊れていないかは、リリース時に初めて気づきたくない
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extensions
+          path: |
+            dist/slite-ime-fix-chrome.zip
+            dist/slite-ime-fix-firefox.xpi
+          retention-days: 7
+
+# NOTE: pnpm e2e (agent-browser) はここに無い。実ブラウザを1つ落としてくるので
+# PR ごとに回すには重く、二重入力の再現そのものは jsdom のユニットテストが押さえている。
+# 手元で `pnpm e2e`、リリース前に一度通す運用

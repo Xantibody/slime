@@ -12,7 +12,7 @@ export interface EmacsKeybindToggleMessage {
   readonly enabled: boolean;
 }
 
-export interface ExtensionTab {
+interface ExtensionTab {
   readonly id?: number | undefined;
 }
 

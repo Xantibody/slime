@@ -7,7 +7,7 @@ export interface SlateEditor {
 
 export type EditorGetter = () => SlateEditor | null;
 
-export interface IMEFixState {
+interface IMEFixState {
   readonly savedMarks: Record<string, unknown> | null;
   readonly isComposing: boolean;
 }

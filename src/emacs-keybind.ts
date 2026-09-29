@@ -9,7 +9,7 @@ const KEY_MAP = {
   e: "End",
 } as const satisfies Record<string, string>;
 
-export type EmacsKey = keyof typeof KEY_MAP;
+type EmacsKey = keyof typeof KEY_MAP;
 export type MappedKey = (typeof KEY_MAP)[EmacsKey];
 
 /** The parts of a `KeyboardEvent` the interception decision depends on. */

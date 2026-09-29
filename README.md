@@ -78,13 +78,19 @@ Click the extension icon to toggle Emacs-style cursor movement:
 
 ## Development
 
+The toolchain lives in `flake.nix` as the `toolchain` package, and both the
+devShell and CI install that one list — so a tool added for local work cannot
+go missing in CI. Enter it with `nix develop`.
+
 ```bash
-pnpm test:run     # unit tests (vitest + jsdom)
-pnpm typecheck    # tsc --noEmit (TypeScript 7 / typescript-go)
+pnpm check        # everything below except e2e — this is what CI runs
+pnpm fmt:check    # treefmt --ci (oxfmt + nixfmt)
 pnpm lint         # oxlint, every category set to error
-pnpm check        # all three of the above
+pnpm typecheck    # tsc --noEmit (TypeScript 7, the Go port)
+pnpm knip         # unused exports, files and dependencies
+pnpm test:run     # unit tests (vitest + jsdom)
 pnpm e2e          # drives the built extension in a real browser
-nix fmt           # oxfmt + nixfmt via treefmt
+pnpm fmt          # apply formatting
 ```
 
 `pnpm e2e` needs `agent-browser`, which the Nix devShell provides (`nix develop`).
@@ -95,6 +101,21 @@ confirm the bug still reproduces, and once with the built `dist/chrome/inject.js
 Lint runs with `correctness`, `suspicious`, `pedantic`, `perf`, `style`,
 `restriction` and `nursery` all set to `error`. Every disabled rule in
 `.oxlintrc.json` carries a comment explaining why.
+
+### CI / Release
+
+`.github/workflows/checks.yml` holds the checks and is called by both
+`ci.yml` (pull requests and pushes to `main`) and `release.yml` (tags), so a
+check cannot be enforced on one path and skipped on the other. The jobs run in
+parallel; `pnpm e2e` is deliberately not among them, since it downloads a real
+browser and the duplicate-text behaviour it covers is also pinned down by the
+jsdom tests.
+
+Releasing is `git tag vX.Y.Z && git push --tags`. The workflow takes the
+version from the tag and builds the manifests with it — `pnpm build` alone
+falls back to the `version` in `package.json`, and a tag that is not
+dot-separated numbers fails the build rather than producing a package the
+stores would reject.
 
 ## Technical Details
 

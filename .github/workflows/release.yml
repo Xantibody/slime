@@ -6,42 +6,33 @@ on:
       - "v*"
 
 jobs:
-  build-and-release:
+  # PR と同じ検査を並列で通す。リリースは needs で後ろに置けば足りるので、
+  # 検査そのものを直列に並べる理由はない
+  checks:
+    uses: ./.github/workflows/checks.yml
+
+  release:
+    needs: checks
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Type check
-        run: pnpm typecheck
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Run tests
-        run: pnpm test:run
+      # manifest.json のバージョンはタグから決まる。package.json 側を手で
+      # 書き換え忘れたまま tag を打っても、配布物には正しい版が入る
+      - name: Set version from tag
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
 
       - name: Build extensions
-        run: pnpm build
+        run: pnpm run build
 
       - name: Rename packages with version
         run: |
-          mv dist/slite-ime-fix-chrome.zip dist/slite-ime-fix-chrome-${{ github.ref_name }}.zip
-          mv dist/slite-ime-fix-firefox.xpi dist/slite-ime-fix-firefox-${{ github.ref_name }}.xpi
+          mv dist/slite-ime-fix-chrome.zip "dist/slite-ime-fix-chrome-${GITHUB_REF_NAME}.zip"
+          mv dist/slite-ime-fix-firefox.xpi "dist/slite-ime-fix-firefox-${GITHUB_REF_NAME}.xpi"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2

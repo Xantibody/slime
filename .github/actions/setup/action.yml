@@ -1,0 +1,17 @@
+name: "Setup"
+description: "Install the toolchain described in flake.nix, plus project dependencies"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: DeterminateSystems/nix-installer-action@v16
+
+    # 道具の一覧は flake.nix の `toolchain` が持つ。ここで名前を並べ直すと、
+    # devShell に足したのに CI で落ちる(あるいはその逆)という食い違いが起きる
+    - name: Install the toolchain
+      shell: bash
+      run: nix profile install .#toolchain
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile

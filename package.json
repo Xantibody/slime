@@ -1,6 +1,6 @@
 {
   "name": "slite-ime-fix",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Chrome extension to fix Japanese IME double-display issue in Slite",
   "type": "module",
   "scripts": {
@@ -10,10 +10,12 @@
     "build:chrome": "node --experimental-strip-types scripts/build.ts chrome",
     "build:firefox": "node --experimental-strip-types scripts/build.ts firefox",
     "typecheck": "tsc --noEmit",
-    "lint": "oxlint",
+    "lint": "oxlint src scripts e2e vitest.config.ts",
+    "knip": "knip",
+    "fmt": "treefmt",
+    "fmt:check": "treefmt --ci",
     "e2e": "pnpm build && node --experimental-strip-types e2e/run.ts",
-    "check": "pnpm typecheck && pnpm lint && pnpm test:run",
-    "fmt": "nix fmt"
+    "check": "pnpm fmt:check && pnpm lint && pnpm typecheck && pnpm knip && pnpm test:run"
   },
   "devDependencies": {
     "@types/chrome": "^0.2.5",
@@ -21,8 +23,7 @@
     "@types/node": "^26.2.0",
     "esbuild": "^0.28.2",
     "jsdom": "^30.0.1",
-    "oxlint": "1.78.0",
-    "typescript": "^7.0.2",
+    "knip": "^6.32.2",
     "vitest": "^2.0.0"
   }
 }
