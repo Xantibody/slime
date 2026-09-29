@@ -38,7 +38,11 @@ export interface FirefoxManifest extends BaseManifest {
   readonly permissions: readonly string[];
   readonly background: { readonly scripts: readonly string[] };
   readonly browser_specific_settings: {
-    readonly gecko: { readonly id: string; readonly strict_min_version: string };
+    readonly gecko: {
+      readonly id: string;
+      readonly strict_min_version: string;
+      readonly data_collection_permissions: { readonly required: readonly ["none"] };
+    };
   };
 }
 
@@ -120,6 +124,9 @@ export function generateFirefoxManifest(version: string): FirefoxManifest {
       gecko: {
         id: "slite-ime-fix@example.com",
         strict_min_version: "109.0",
+        // AMO refuses new add-ons that do not declare this. The extension
+        // only rewrites the editor's DOM and never sends anything anywhere
+        data_collection_permissions: { required: ["none"] },
       },
     },
     permissions: ["tabs", "storage"],

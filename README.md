@@ -25,7 +25,20 @@ When using Japanese IME (Input Method Editor) in Slite, composed text appears du
 2. Open Firefox and drag the `.xpi` file into the browser window
 3. Click "Add" when prompted
 
-> Note: Firefox may warn about unsigned extensions. For permanent installation without warnings, the extension needs to be signed by Mozilla or installed in Firefox Developer Edition with `xpinstall.signatures.required` set to `false`.
+> Note: the `.xpi` attached to a GitHub Release is unsigned, so Firefox may refuse it. The copy published on addons.mozilla.org is signed by Mozilla.
+
+### Nix (home-manager)
+
+The flake's `packages.default` is the xpi signed by AMO, so it installs into a
+regular Firefox:
+
+```nix
+inputs.slite-ime-fix.url = "github:Xantibody/slite-ime-fix";
+
+programs.firefox.profiles.<profile>.extensions.packages = [
+  inputs.slite-ime-fix.packages.${system}.default
+];
+```
 
 ### Build from source
 
@@ -116,6 +129,25 @@ version from the tag and builds the manifests with it — `pnpm build` alone
 falls back to the `version` in `package.json`, and a tag that is not
 dot-separated numbers fails the build rather than producing a package the
 stores would reject.
+
+After the GitHub Release, the same packages go to both stores: the `.xpi`
+and a `git archive` of the tag (AMO reviews bundled code against its
+source; see `SOURCE_BUILD.md`) to addons.mozilla.org, and the `.zip` to the
+Chrome Web Store. Both need the listing to exist already — the first
+submission is made by hand in each store's dashboard — and these repository
+settings:
+
+| Kind     | Name                                                      |
+| -------- | --------------------------------------------------------- |
+| Secret   | `AMO_JWT_ISSUER`, `AMO_JWT_SECRET`                        |
+| Secret   | `CWS_CLIENT_ID`, `CWS_CLIENT_SECRET`, `CWS_REFRESH_TOKEN` |
+| Variable | `CWS_EXTENSION_ID`, `CWS_PUBLISHER_ID`                    |
+
+AMO reviews a version before it is downloadable, so the release cannot
+point `flake.nix` at it. `update-flake-amo.yml` checks every six hours and,
+once the latest tag's version is public, commits its URL and hash to
+`flake.nix`. Until the first version passes review, the flake has no
+`packages.default`.
 
 ## Technical Details
 

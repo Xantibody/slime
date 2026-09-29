@@ -1,5 +1,5 @@
 {
-  description = "Slite Japanese IME Fix - Chrome Extension";
+  description = "Slite Japanese IME Fix - browser extension for Chrome and Firefox";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -14,6 +14,12 @@
       flake-utils,
       treefmt-nix,
     }:
+    let
+      # NOTE: url and hash are auto-updated by .github/workflows/update-flake-amo.yml
+      # (empty until the first release is published on AMO)
+      amoUrl = "";
+      amoHash = "";
+    in
     flake-utils.lib.eachDefaultSystem (
       system:
       let
@@ -41,7 +47,34 @@
         formatter = treefmtEval.config.build.wrapper;
         checks.formatting = treefmtEval.config.build.check self;
 
-        packages.toolchain = toolchain;
+        packages = {
+          inherit toolchain;
+        }
+        # AMO で署名された xpi を配る。手元でビルドした xpi は未署名で、
+        # 通常版の Firefox は読み込まない。
+        # 初回公開までは URL が無いので、default そのものを出さない
+        # (空の URL で fetchurl を評価すると flake 全体の評価が落ちる)
+        // pkgs.lib.optionalAttrs (amoUrl != "") {
+          default = pkgs.stdenv.mkDerivation {
+            name = "slite-ime-fix-firefox-xpi";
+
+            src = pkgs.fetchurl {
+              url = amoUrl;
+              hash = amoHash;
+            };
+
+            passthru.addonId = "slite-ime-fix@example.com";
+
+            preferLocalBuild = true;
+            allowSubstitutes = true;
+
+            buildCommand = ''
+              dst="$out/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+              mkdir -p "$dst"
+              install -v -m644 "$src" "$dst/slite-ime-fix@example.com.xpi"
+            '';
+          };
+        };
 
         devShells.default = pkgs.mkShell {
           packages = [

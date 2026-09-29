@@ -1,0 +1,75 @@
+name: Update flake AMO URL
+
+# AMO の審査は数分から数日かかり、通過を知らせる webhook も無い。
+# リリースのジョブで待つ代わりに、定期的に見に行って flake.nix へ書き戻す
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # 版の正はタグ(release.yml と同じ)。package.json は上げ忘れうるので見ない
+      - name: Get the latest released version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=$(gh release view --json tagName --jq .tagName)
+          echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
+
+      - name: Query AMO API
+        run: |
+          RESPONSE=$(curl -sf "https://addons.mozilla.org/api/v5/addons/addon/slite-ime-fix@example.com/versions/${VERSION}/" || true)
+          FILE_URL=$(echo "$RESPONSE" | jq -r '.file.url // empty')
+          if [ -z "$FILE_URL" ]; then
+            echo "Version ${VERSION} not yet available on AMO"
+            exit 0
+          fi
+          echo "AMO_URL=$FILE_URL" >> "$GITHUB_ENV"
+
+      - name: Check if update needed
+        if: env.AMO_URL != ''
+        run: |
+          CURRENT_URL=$(grep 'amoUrl = ' flake.nix | sed 's/.*"\(.*\)".*/\1/')
+          if [ "$CURRENT_URL" = "$AMO_URL" ]; then
+            echo "Already up to date"
+            echo "SKIP=true" >> "$GITHUB_ENV"
+          fi
+
+      - uses: DeterminateSystems/nix-installer-action@v16
+        if: env.SKIP != 'true' && env.AMO_URL != ''
+
+      - name: Update flake.nix URL
+        if: env.SKIP != 'true' && env.AMO_URL != ''
+        run: |
+          sed -i "s|amoUrl = \".*\";|amoUrl = \"$AMO_URL\";|" flake.nix
+
+      # ハッシュを空にしてビルドさせ、fetchurl が報告する実際の値を拾う
+      - name: Compute hash
+        if: env.SKIP != 'true' && env.AMO_URL != ''
+        run: |
+          sed -i 's|amoHash = ".*";|amoHash = "";|' flake.nix
+          HASH=$(nix build .#default 2>&1 | grep -oP 'got:\s+\K\S+' || true)
+          if [ -z "$HASH" ]; then
+            echo "Could not determine the hash of $AMO_URL" >&2
+            exit 1
+          fi
+          sed -i "s|amoHash = \"\";|amoHash = \"$HASH\";|" flake.nix
+          nix build .#default --no-link
+
+      - name: Commit and push
+        if: env.SKIP != 'true' && env.AMO_URL != ''
+        run: |
+          git diff --quiet flake.nix && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add flake.nix
+          git commit -m "fix(flake): update AMO URL and hash for v${VERSION}"
+          git push

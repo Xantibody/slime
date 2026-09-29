@@ -14,6 +14,7 @@
     "knip": "knip",
     "fmt": "treefmt",
     "fmt:check": "treefmt --ci",
+    "package:source": "git archive -o dist/slite-ime-fix-source-v${VERSION:?}.zip HEAD",
     "e2e": "pnpm build && node --experimental-strip-types e2e/run.ts",
     "check": "pnpm fmt:check && pnpm lint && pnpm typecheck && pnpm knip && pnpm test:run"
   },
