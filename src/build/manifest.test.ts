@@ -125,6 +125,12 @@ describe(generateFirefoxManifest, () => {
     expect(gecko.strict_min_version).toBeDefined();
   });
 
+  it("should declare that no data is collected, as AMO requires of new add-ons", () => {
+    const { gecko } = generateFirefoxManifest(VERSION).browser_specific_settings;
+
+    expect(gecko.data_collection_permissions).toStrictEqual({ required: ["none"] });
+  });
+
   it("should preserve base manifest fields", () => {
     const manifest = generateFirefoxManifest(VERSION);
 
