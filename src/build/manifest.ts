@@ -48,16 +48,23 @@ const ICONS: IconSet = {
   48: "icons/icon-48.png",
 };
 
+/** Chrome stores each version component as a 16-bit integer. */
+const MAX_VERSION_COMPONENT = 65_535;
+
 /**
- * Browsers only accept dot-separated numbers here, and a release tag is the
- * one place the version is authoritative — so reject anything else loudly
- * rather than shipping a package the store will refuse.
+ * Browsers only accept one to four dot-separated integers from 0 to 65535,
+ * without leading zeros, and a release tag is the one place the version is
+ * authoritative — so reject anything else loudly rather than shipping a
+ * package the store will refuse.
  *
  * @param version - candidate version string, e.g. from a `v1.2.0` tag
  * @returns the same string, once it is known to be well-formed
  */
 export function assertVersion(version: string): string {
-  if (!/^\d+(?:\.\d+){0,3}$/u.test(version)) {
+  if (
+    !/^(?:0|[1-9]\d*)(?:\.(?:0|[1-9]\d*)){0,3}$/u.test(version) ||
+    version.split(".").some((part) => Number(part) > MAX_VERSION_COMPONENT)
+  ) {
     throw new Error(`Invalid extension version: ${version} (expected e.g. 1.2.0)`);
   }
 

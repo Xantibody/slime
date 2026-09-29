@@ -9,11 +9,22 @@ import {
 const VERSION = "1.2.3";
 
 describe(assertVersion, () => {
-  it.each(["1", "1.0", "1.2.3", "10.20.30.40"])("should accept %s", (version) => {
-    expect(assertVersion(version)).toBe(version);
-  });
+  it.each(["0", "1", "1.0", "1.2.3", "10.20.30.40", "65535.0.0.65535"])(
+    "should accept %s",
+    (version) => {
+      expect(assertVersion(version)).toBe(version);
+    },
+  );
 
-  it.each(["v1.2.3", "1.2.3-beta", "", "1.2.3.4.5", "latest"])("should reject %s", (version) => {
+  it.each([
+    ["v1.2.3", "a tag prefix"],
+    ["1.2.3-beta", "a pre-release suffix"],
+    ["", "an empty string"],
+    ["1.2.3.4.5", "more than four components"],
+    ["latest", "a word"],
+    ["65536.1", "a component above 65535"],
+    ["1.02", "a non-zero component with a leading zero"],
+  ])("should reject %s (%s)", (version) => {
     expect(() => assertVersion(version)).toThrow(/Invalid extension version/u);
   });
 });
@@ -33,6 +44,10 @@ describe(createBaseManifest, () => {
 
   it("should refuse a tag-shaped version", () => {
     expect(() => createBaseManifest("v1.2.3")).toThrow(/Invalid extension version/u);
+  });
+
+  it("should refuse a version the browser would reject", () => {
+    expect(() => createBaseManifest("65536.1")).toThrow(/Invalid extension version/u);
   });
 
   it("should have icons configuration", () => {
