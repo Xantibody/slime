@@ -1,5 +1,5 @@
 {
-  "name": "slite-ime-fix",
+  "name": "slime",
   "version": "1.1.1",
   "description": "Chrome extension to fix Japanese IME double-display issue in Slite",
   "type": "module",
@@ -14,7 +14,7 @@
     "knip": "knip",
     "fmt": "treefmt",
     "fmt:check": "treefmt --ci",
-    "package:source": "git archive -o dist/slite-ime-fix-source-v${VERSION:?}.zip HEAD",
+    "package:source": "git archive -o dist/slime-source-v${VERSION:?}.zip HEAD",
     "e2e": "pnpm build && node --experimental-strip-types e2e/run.ts",
     "check": "pnpm fmt:check && pnpm lint && pnpm typecheck && pnpm knip && pnpm test:run"
   },
