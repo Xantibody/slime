@@ -48,36 +48,54 @@ const ICONS: IconSet = {
   48: "icons/icon-48.png",
 };
 
-export const BASE_MANIFEST: BaseManifest = {
-  action: {
-    default_icon: ICONS,
-    default_popup: "popup.html",
-    default_title: "Slite IME Fix",
-  },
-  content_scripts: [
-    {
-      matches: ["https://*.slite.com/*"],
-      js: ["content-script.js"],
-      run_at: "document_start",
-    },
-  ],
-  description: "Fixes Japanese IME double-display issue in Slite editor",
-  host_permissions: ["https://*.slite.com/*"],
-  icons: ICONS,
-  manifest_version: 3,
-  name: "Slite Japanese IME Fix",
-  version: "1.0.0",
-  web_accessible_resources: [
-    {
-      resources: ["inject.js"],
-      matches: ["https://*.slite.com/*"],
-    },
-  ],
-};
+/**
+ * Browsers only accept dot-separated numbers here, and a release tag is the
+ * one place the version is authoritative — so reject anything else loudly
+ * rather than shipping a package the store will refuse.
+ *
+ * @param version - candidate version string, e.g. from a `v1.2.0` tag
+ * @returns the same string, once it is known to be well-formed
+ */
+export function assertVersion(version: string): string {
+  if (!/^\d+(?:\.\d+){0,3}$/u.test(version)) {
+    throw new Error(`Invalid extension version: ${version} (expected e.g. 1.2.0)`);
+  }
 
-export function generateChromeManifest(): ChromeManifest {
+  return version;
+}
+
+export function createBaseManifest(version: string): BaseManifest {
   return {
-    ...BASE_MANIFEST,
+    action: {
+      default_icon: ICONS,
+      default_popup: "popup.html",
+      default_title: "Slite IME Fix",
+    },
+    content_scripts: [
+      {
+        matches: ["https://*.slite.com/*"],
+        js: ["content-script.js"],
+        run_at: "document_start",
+      },
+    ],
+    description: "Fixes Japanese IME double-display issue in Slite editor",
+    host_permissions: ["https://*.slite.com/*"],
+    icons: ICONS,
+    manifest_version: 3,
+    name: "Slite Japanese IME Fix",
+    version: assertVersion(version),
+    web_accessible_resources: [
+      {
+        resources: ["inject.js"],
+        matches: ["https://*.slite.com/*"],
+      },
+    ],
+  };
+}
+
+export function generateChromeManifest(version: string): ChromeManifest {
+  return {
+    ...createBaseManifest(version),
     background: {
       service_worker: "background.js",
     },
@@ -85,9 +103,9 @@ export function generateChromeManifest(): ChromeManifest {
   };
 }
 
-export function generateFirefoxManifest(): FirefoxManifest {
+export function generateFirefoxManifest(version: string): FirefoxManifest {
   return {
-    ...BASE_MANIFEST,
+    ...createBaseManifest(version),
     background: {
       scripts: ["background.js"],
     },

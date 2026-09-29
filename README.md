@@ -97,6 +97,14 @@ Lint runs with `correctness`, `suspicious`, `pedantic`, `perf`, `style`,
 `restriction` and `nursery` all set to `error`. Every disabled rule in
 `.oxlintrc.json` carries a comment explaining why.
 
+### Release
+
+Releasing is `git tag vX.Y.Z && git push --tags`. The workflow takes the
+version from the tag and builds the manifests with it — `pnpm build` alone
+falls back to the `version` in `package.json`, and a tag that is not
+dot-separated numbers fails the build rather than producing a package the
+stores would reject.
+
 ## Technical Details
 
 ### Root Cause

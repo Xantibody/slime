@@ -1,9 +1,28 @@
 // Build script: Generate Chrome and Firefox extensions
 import { execFileSync } from "node:child_process";
-import { cpSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { build } from "esbuild";
 import { generateChromeManifest, generateFirefoxManifest } from "../src/build/manifest.ts";
 import type { ChromeManifest, FirefoxManifest } from "../src/build/manifest.ts";
+
+// Release builds take the version from the tag (`VERSION` in the workflow);
+// local builds fall back to package.json so `pnpm build` needs no ceremony.
+function resolveVersion(): string {
+  const fromTag = process.env["VERSION"];
+  if (fromTag !== undefined && fromTag !== "") {
+    return fromTag;
+  }
+
+  const manifest: unknown = JSON.parse(readFileSync("package.json", "utf8"));
+  const { version } = manifest as { version?: unknown };
+  if (typeof version !== "string") {
+    throw new TypeError("package.json has no version field");
+  }
+
+  return version;
+}
+
+const VERSION = resolveVersion();
 
 const TARGETS = ["chrome", "firefox"] as const;
 type Target = (typeof TARGETS)[number];
@@ -16,12 +35,12 @@ interface TargetConfig {
 
 const CONFIGS: Readonly<Record<Target, TargetConfig>> = {
   chrome: {
-    manifest: generateChromeManifest(),
+    manifest: generateChromeManifest(VERSION),
     background: "src/background.chrome.ts",
     packagePath: "dist/slite-ime-fix-chrome.zip",
   },
   firefox: {
-    manifest: generateFirefoxManifest(),
+    manifest: generateFirefoxManifest(VERSION),
     background: "src/background.firefox.ts",
     packagePath: "dist/slite-ime-fix-firefox.xpi",
   },
