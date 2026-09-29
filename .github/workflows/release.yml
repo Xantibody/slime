@@ -34,6 +34,10 @@ jobs:
           mv dist/slite-ime-fix-chrome.zip "dist/slite-ime-fix-chrome-${GITHUB_REF_NAME}.zip"
           mv dist/slite-ime-fix-firefox.xpi "dist/slite-ime-fix-firefox-${GITHUB_REF_NAME}.xpi"
 
+      # AMO はバンドルされたコードの審査に元のソースを求める
+      - name: Package source
+        run: pnpm run package:source
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -41,3 +45,56 @@ jobs:
             dist/slite-ime-fix-chrome-${{ github.ref_name }}.zip
             dist/slite-ime-fix-firefox-${{ github.ref_name }}.xpi
           generate_release_notes: true
+
+      # ストアへ出すのは GitHub Release に載せたのと同じバイト列。
+      # 公開ジョブごとにビルドし直すと、Release とストアの中身が食い違いうる
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: dist/slite-ime-fix-*-${{ github.ref_name }}.*
+          retention-days: 7
+
+  publish-amo:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: packages
+
+      - name: Publish to AMO
+        uses: browser-actions/release-firefox-addon@v0.2.1
+        with:
+          addon-id: slite-ime-fix@example.com
+          addon-path: slite-ime-fix-firefox-${{ github.ref_name }}.xpi
+          source-path: slite-ime-fix-source-${{ github.ref_name }}.zip
+          license: MIT
+          release-note: "See https://github.com/Xantibody/slite-ime-fix/releases/tag/${{ github.ref_name }}"
+          approval-note: "Build instructions are in SOURCE_BUILD.md inside the source archive."
+          auth-api-issuer: ${{ secrets.AMO_JWT_ISSUER }}
+          auth-api-secret: ${{ secrets.AMO_JWT_SECRET }}
+
+  publish-cws:
+    needs: release
+    runs-on: ubuntu-latest
+    # CWS API v2 の publish は版を取らず「最後に上がった zip」を審査に出す。
+    # 2つのタグが同時に走ると、片方がもう片方の zip を出しかねない
+    concurrency:
+      group: chrome-web-store
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: packages
+
+      # 拡張 ID と publisher ID は秘密ではないが、ダッシュボードで初回登録
+      # するまで決まらないので、ここに直書きせず repository variables から読む
+      - name: Publish to Chrome Web Store
+        uses: mnao305/chrome-extension-upload@v7.0.0
+        with:
+          file-path: slite-ime-fix-chrome-${{ github.ref_name }}.zip
+          extension-id: ${{ vars.CWS_EXTENSION_ID }}
+          publisher-id: ${{ vars.CWS_PUBLISHER_ID }}
+          client-id: ${{ secrets.CWS_CLIENT_ID }}
+          client-secret: ${{ secrets.CWS_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CWS_REFRESH_TOKEN }}
