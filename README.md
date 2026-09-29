@@ -27,6 +27,19 @@ When using Japanese IME (Input Method Editor) in Slite, composed text appears du
 
 > Note: the `.xpi` attached to a GitHub Release is unsigned, so Firefox may refuse it. The copy published on addons.mozilla.org is signed by Mozilla.
 
+### Nix (home-manager)
+
+The flake's `packages.default` is the xpi signed by AMO, so it installs into a
+regular Firefox:
+
+```nix
+inputs.slite-ime-fix.url = "github:Xantibody/slite-ime-fix";
+
+programs.firefox.profiles.<profile>.extensions.packages = [
+  inputs.slite-ime-fix.packages.${system}.default
+];
+```
+
 ### Build from source
 
 ```bash
@@ -129,6 +142,12 @@ settings:
 | Secret   | `AMO_JWT_ISSUER`, `AMO_JWT_SECRET`                        |
 | Secret   | `CWS_CLIENT_ID`, `CWS_CLIENT_SECRET`, `CWS_REFRESH_TOKEN` |
 | Variable | `CWS_EXTENSION_ID`, `CWS_PUBLISHER_ID`                    |
+
+AMO reviews a version before it is downloadable, so the release cannot
+point `flake.nix` at it. `update-flake-amo.yml` checks every six hours and,
+once the latest tag's version is public, commits its URL and hash to
+`flake.nix`. Until the first version passes review, the flake has no
+`packages.default`.
 
 ## Technical Details
 
