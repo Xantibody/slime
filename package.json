@@ -12,9 +12,10 @@
     "typecheck": "tsc --noEmit",
     "lint": "oxlint src scripts e2e vitest.config.ts",
     "knip": "knip",
+    "fmt": "treefmt",
+    "fmt:check": "treefmt --ci",
     "e2e": "pnpm build && node --experimental-strip-types e2e/run.ts",
-    "check": "pnpm typecheck && pnpm lint && pnpm knip && pnpm test:run",
-    "fmt": "nix fmt"
+    "check": "pnpm fmt:check && pnpm lint && pnpm typecheck && pnpm knip && pnpm test:run"
   },
   "devDependencies": {
     "@types/chrome": "^0.2.5",
@@ -23,8 +24,6 @@
     "esbuild": "^0.28.2",
     "jsdom": "^30.0.1",
     "knip": "^6.32.2",
-    "oxlint": "1.78.0",
-    "typescript": "^7.0.2",
     "vitest": "^2.0.0"
   }
 }

@@ -13,8 +13,8 @@
   ],
   "project": ["src/**/*.ts", "scripts/**/*.ts", "e2e/**/*.{ts,js}"],
 
-  // flake.nix の devShell が渡す道具。package.json には現れない
-  "ignoreBinaries": ["nix", "agent-browser"],
+  // flake.nix の toolchain が渡す道具。package.json には現れない
+  "ignoreBinaries": ["tsc", "oxlint", "treefmt", "agent-browser"],
 
   // tsconfig.json の `types` から読まれるだけで、import 文には出てこない
   "ignoreDependencies": ["@types/chrome", "@types/firefox-webext-browser"],
