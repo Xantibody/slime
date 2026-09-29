@@ -82,7 +82,8 @@ Click the extension icon to toggle Emacs-style cursor movement:
 pnpm test:run     # unit tests (vitest + jsdom)
 pnpm typecheck    # tsc --noEmit (TypeScript 7 / typescript-go)
 pnpm lint         # oxlint, every category set to error
-pnpm check        # all three of the above
+pnpm knip         # unused exports, files and dependencies
+pnpm check        # all four of the above
 pnpm e2e          # drives the built extension in a real browser
 nix fmt           # oxfmt + nixfmt via treefmt
 ```

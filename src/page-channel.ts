@@ -7,8 +7,8 @@
 export const EMACS_KEYBIND_ATTRIBUTE = "data-slite-ime-fix-emacs";
 export const EMACS_KEYBIND_EVENT = "slite-ime-fix:emacs-keybind";
 
-export const ENABLED = "on";
-export const DISABLED = "off";
+const ENABLED = "on";
+const DISABLED = "off";
 
 export function toAttributeValue(enabled: boolean): string {
   return enabled ? ENABLED : DISABLED;

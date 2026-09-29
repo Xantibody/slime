@@ -15,7 +15,7 @@
 /** Zero-width no-break space (used by Slate as placeholder content) */
 export const ZWNBSP = "﻿";
 
-export const MARK_PLACEHOLDER_SELECTOR = "[data-slate-mark-placeholder]";
+const MARK_PLACEHOLDER_SELECTOR = "[data-slate-mark-placeholder]";
 
 export function hasResidualText(element: Element): boolean {
   const text = element.textContent;

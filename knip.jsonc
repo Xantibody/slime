@@ -1,0 +1,21 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+
+  // 拡張は「呼ばれる側」しかない。manifest.json と build スクリプトが指す
+  // ファイルが入口で、そこから辿れないものは本当に使われていない
+  "entry": [
+    "src/inject.ts",
+    "src/content-script.ts",
+    "src/popup.ts",
+    "src/background.chrome.ts",
+    "src/background.firefox.ts",
+    "e2e/verify.js",
+  ],
+  "project": ["src/**/*.ts", "scripts/**/*.ts", "e2e/**/*.{ts,js}"],
+
+  // flake.nix の devShell が渡す道具。package.json には現れない
+  "ignoreBinaries": ["nix", "agent-browser"],
+
+  // tsconfig.json の `types` から読まれるだけで、import 文には出てこない
+  "ignoreDependencies": ["@types/chrome", "@types/firefox-webext-browser"],
+}

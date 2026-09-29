@@ -1,6 +1,6 @@
 // Manifest generation - pure functions (no I/O)
 
-export interface IconSet {
+interface IconSet {
   readonly 16: string;
   readonly 48: string;
   readonly 128: string;

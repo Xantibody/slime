@@ -11,8 +11,9 @@
     "build:firefox": "node --experimental-strip-types scripts/build.ts firefox",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint src scripts e2e vitest.config.ts",
+    "knip": "knip",
     "e2e": "pnpm build && node --experimental-strip-types e2e/run.ts",
-    "check": "pnpm typecheck && pnpm lint && pnpm test:run",
+    "check": "pnpm typecheck && pnpm lint && pnpm knip && pnpm test:run",
     "fmt": "nix fmt"
   },
   "devDependencies": {
@@ -21,6 +22,7 @@
     "@types/node": "^26.2.0",
     "esbuild": "^0.28.2",
     "jsdom": "^30.0.1",
+    "knip": "^6.32.2",
     "oxlint": "1.78.0",
     "typescript": "^7.0.2",
     "vitest": "^2.0.0"
