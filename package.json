@@ -1,6 +1,6 @@
 {
   "name": "slime",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Chrome extension to fix Japanese IME double-display issue in Slite",
   "type": "module",
   "scripts": {
