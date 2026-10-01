@@ -34,7 +34,7 @@ describe(createBaseManifest, () => {
     const manifest = createBaseManifest(VERSION);
 
     expect(manifest.manifest_version).toBe(3);
-    expect(manifest.name).toBe("Slite Japanese IME Fix");
+    expect(manifest.name).toBe("Slime");
     expect(manifest.host_permissions).toContain("https://*.slite.com/*");
   });
 
