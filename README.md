@@ -1,4 +1,4 @@
-# Slite Japanese IME Fix
+# Slime
 
 Browser extension that fixes the Japanese IME double-display bug in Slite editor.
 

@@ -80,7 +80,7 @@ export function createBaseManifest(version: string): BaseManifest {
     action: {
       default_icon: ICONS,
       default_popup: "popup.html",
-      default_title: "Slite IME Fix",
+      default_title: "Slime",
     },
     content_scripts: [
       {
@@ -93,7 +93,7 @@ export function createBaseManifest(version: string): BaseManifest {
     host_permissions: ["https://*.slite.com/*"],
     icons: ICONS,
     manifest_version: 3,
-    name: "Slite Japanese IME Fix",
+    name: "Slime",
     version: assertVersion(version),
     web_accessible_resources: [
       {
