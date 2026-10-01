@@ -1,5 +1,5 @@
 {
-  description = "Slite Japanese IME Fix - browser extension for Chrome and Firefox";
+  description = "Slime - browser extension for Chrome and Firefox";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -85,7 +85,7 @@
           ];
 
           shellHook = ''
-            echo "Slite IME Fix dev environment"
+            echo "Slime dev environment"
             echo "Commands: pnpm check, pnpm test, pnpm e2e, treefmt"
           '';
         };
