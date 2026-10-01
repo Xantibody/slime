@@ -1,5 +1,5 @@
 {
-  description = "Slite Japanese IME Fix - browser extension for Chrome and Firefox";
+  description = "Slime - browser extension for Chrome and Firefox";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -63,7 +63,7 @@
               hash = amoHash;
             };
 
-            passthru.addonId = "slite-ime-fix@example.com";
+            passthru.addonId = "slime@example.com";
 
             preferLocalBuild = true;
             allowSubstitutes = true;
@@ -71,7 +71,7 @@
             buildCommand = ''
               dst="$out/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
               mkdir -p "$dst"
-              install -v -m644 "$src" "$dst/slite-ime-fix@example.com.xpi"
+              install -v -m644 "$src" "$dst/slime@example.com.xpi"
             '';
           };
         };
@@ -85,7 +85,7 @@
           ];
 
           shellHook = ''
-            echo "Slite IME Fix dev environment"
+            echo "Slime dev environment"
             echo "Commands: pnpm check, pnpm test, pnpm e2e, treefmt"
           '';
         };

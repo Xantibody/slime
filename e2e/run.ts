@@ -5,7 +5,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-const SESSION = "slite-ime-fix";
+const SESSION = "slime";
 const FIXTURE = resolve("e2e/slate-ime-fixture.html");
 const VERIFY_SCRIPT = readFileSync("e2e/verify.js", "utf8");
 

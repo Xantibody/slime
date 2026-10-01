@@ -1,4 +1,4 @@
-// Slite Japanese IME Fix - Core Logic
+// Slime - Core Logic
 
 /** The subset of the Slate editor instance this extension touches. */
 export interface SlateEditor {

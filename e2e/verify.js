@@ -66,8 +66,8 @@ function tick() {
   press("f");
   result.emacsDisabled = caret();
 
-  document.documentElement.dataset.sliteImeFixEmacs = "on";
-  globalThis.dispatchEvent(new CustomEvent("slite-ime-fix:emacs-keybind"));
+  document.documentElement.dataset.slimeEmacs = "on";
+  globalThis.dispatchEvent(new CustomEvent("slime:emacs-keybind"));
 
   press("f");
   result.emacsForward = caret();
@@ -82,8 +82,8 @@ function tick() {
   press("x");
   result.emacsIgnoresUnmappedKey = caret();
 
-  document.documentElement.dataset.sliteImeFixEmacs = "off";
-  globalThis.dispatchEvent(new CustomEvent("slite-ime-fix:emacs-keybind"));
+  document.documentElement.dataset.slimeEmacs = "off";
+  globalThis.dispatchEvent(new CustomEvent("slime:emacs-keybind"));
   press("f");
   result.emacsAfterToggleOff = caret();
 

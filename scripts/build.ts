@@ -65,7 +65,7 @@ async function bundle(
     target: "es2022",
     platform: "browser",
     charset: "utf8",
-    banner: { js: "// Slite Japanese IME Fix - auto-generated from src/, do not edit" },
+    banner: { js: "// Slime - auto-generated from src/, do not edit" },
   });
 }
 

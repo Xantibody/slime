@@ -1,4 +1,4 @@
-// Slite Japanese IME Fix - page context entry point
+// Slime - page context entry point
 import { mapToKey, shouldIntercept } from "./emacs-keybind.ts";
 import type { MappedKey } from "./emacs-keybind.ts";
 import { createIMEFix, getEditorFromRefs } from "./ime-fix.ts";
@@ -19,7 +19,7 @@ const slateGlobal = globalThis as unknown as SlateGlobal;
 
 function log(...args: readonly unknown[]): void {
   // oxlint-disable-next-line no-console -- the page console is this extension's only diagnostic channel
-  console.log("[Slite IME Fix]", ...args);
+  console.log("[Slime]", ...args);
 }
 
 // === IME Fix ===

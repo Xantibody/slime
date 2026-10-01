@@ -4,8 +4,8 @@
 // `detail` across the content-script / page boundary, so the payload rides on
 // a DOM attribute and the event is only a notification.
 
-export const EMACS_KEYBIND_ATTRIBUTE = "data-slite-ime-fix-emacs";
-export const EMACS_KEYBIND_EVENT = "slite-ime-fix:emacs-keybind";
+export const EMACS_KEYBIND_ATTRIBUTE = "data-slime-emacs";
+export const EMACS_KEYBIND_EVENT = "slime:emacs-keybind";
 
 const ENABLED = "on";
 const DISABLED = "off";
