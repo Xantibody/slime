@@ -65,7 +65,7 @@ jobs:
       - name: Publish to AMO
         uses: browser-actions/release-firefox-addon@v0.2.1
         with:
-          addon-id: slite-ime-fix@example.com
+          addon-id: slime@example.com
           addon-path: slime-firefox-${{ github.ref_name }}.xpi
           source-path: slime-source-${{ github.ref_name }}.zip
           license: MIT

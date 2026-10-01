@@ -122,9 +122,10 @@ export function generateFirefoxManifest(version: string): FirefoxManifest {
     },
     browser_specific_settings: {
       gecko: {
-        // AIDEV-NOTE: keeps the repository's old name (now slime) on purpose.
-        // AMO ties a listing to this ID forever; changing it makes a new add-on
-        id: "slite-ime-fix@example.com",
+        // AIDEV-NOTE: never change this once the add-on is on AMO, which ties a
+        // listing to its ID for good. release.yml, update-flake-amo.yml and
+        // flake.nix repeat the same string
+        id: "slime@example.com",
         strict_min_version: "109.0",
         // AMO refuses new add-ons that do not declare this. The extension
         // only rewrites the editor's DOM and never sends anything anywhere

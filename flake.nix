@@ -63,7 +63,7 @@
               hash = amoHash;
             };
 
-            passthru.addonId = "slite-ime-fix@example.com";
+            passthru.addonId = "slime@example.com";
 
             preferLocalBuild = true;
             allowSubstitutes = true;
@@ -71,7 +71,7 @@
             buildCommand = ''
               dst="$out/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
               mkdir -p "$dst"
-              install -v -m644 "$src" "$dst/slite-ime-fix@example.com.xpi"
+              install -v -m644 "$src" "$dst/slime@example.com.xpi"
             '';
           };
         };

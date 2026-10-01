@@ -121,7 +121,7 @@ describe(generateFirefoxManifest, () => {
   it("should have browser_specific_settings for gecko", () => {
     const { gecko } = generateFirefoxManifest(VERSION).browser_specific_settings;
 
-    expect(gecko.id).toBeDefined();
+    expect(gecko.id).toBe("slime@example.com");
     expect(gecko.strict_min_version).toBeDefined();
   });
 
