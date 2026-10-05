@@ -50,6 +50,7 @@ check("duplicate survives the commit", broken["afterCommitSettled"], "大変だ�
 check("duplicate survives a late re-render", broken["afterLateRerender"], "大変だ体現だ体現");
 check("marks are never parked", broken["marksDuringComposition"], '{"bold":true}');
 check("Ctrl+F does nothing", broken["emacsForward"], "committed:0");
+check("composing Enter blurs the row title", broken["rowTitleAfterComposingEnter"], "blurred");
 
 process.stdout.write("\nWith the fix:\n");
 const fixed = runFixture("1");
@@ -68,6 +69,8 @@ check("Ctrl+A returns to the start", fixed["emacsHome"], "committed:0");
 check("unmapped Ctrl+X is left alone", fixed["emacsIgnoresUnmappedKey"], "committed:0");
 check("toggling off restores the browser default", fixed["emacsAfterToggleOff"], "committed:0");
 check("committed text is untouched", fixed["committedText"], "大変だ体現です");
+check("composing Enter keeps the row title", fixed["rowTitleAfterComposingEnter"], "focused");
+check("plain Enter still ends editing", fixed["rowTitleAfterPlainEnter"], "blurred");
 
 browser("close");
 

@@ -7,6 +7,12 @@ function press(key) {
   );
 }
 
+function pressEnterIn(target, isComposing) {
+  target.dispatchEvent(
+    new KeyboardEvent("keydown", { key: "Enter", isComposing, bubbles: true, cancelable: true }),
+  );
+}
+
 function tick() {
   // oxlint-disable-next-line promise/avoid-new -- there is no promise-based timer in the page context
   return new Promise((resolve) => {
@@ -88,6 +94,20 @@ function tick() {
   result.emacsAfterToggleOff = caret();
 
   result.committedText = committed.textContent;
+
+  // --- Database row title -------------------------------------------------
+  // The page blurs the input on Enter; during composition that Enter belongs
+  // to the IME, and blurring there is what duplicates the commit.
+  const rowTitle = document.querySelector("#row-title");
+  const focusState = () => (document.activeElement === rowTitle ? "focused" : "blurred");
+
+  rowTitle.focus();
+  pressEnterIn(rowTitle, true);
+  result.rowTitleAfterComposingEnter = focusState();
+
+  rowTitle.focus();
+  pressEnterIn(rowTitle, false);
+  result.rowTitleAfterPlainEnter = focusState();
 
   return JSON.stringify(result, null, 2);
 })();

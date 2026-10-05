@@ -1,4 +1,5 @@
 // Slime - page context entry point
+import { createComposingKeyShield } from "./composing-keydown.ts";
 import { mapToKey, shouldIntercept } from "./emacs-keybind.ts";
 import type { MappedKey } from "./emacs-keybind.ts";
 import { createIMEFix, getEditorFromRefs } from "./ime-fix.ts";
@@ -52,6 +53,10 @@ document.addEventListener(
   },
   true,
 );
+
+// Form fields outside Slate (database row titles) duplicate the commit when
+// the page reacts to the Enter that confirms a conversion.
+createComposingKeyShield().start();
 
 // === Emacs Keybind ===
 type CursorMove = readonly [
