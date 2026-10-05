@@ -99,6 +99,7 @@ go missing in CI. Enter it with `nix develop`.
 pnpm check        # everything below except e2e — this is what CI runs
 pnpm fmt:check    # treefmt --ci (oxfmt + nixfmt)
 pnpm lint         # oxlint, every category set to error
+pnpm lint:comments # typos, and Vale on comments (English only; see AGENTS.md)
 pnpm typecheck    # tsc --noEmit (TypeScript 7, the Go port)
 pnpm knip         # unused exports, files and dependencies
 pnpm test:run     # unit tests (vitest + jsdom)
