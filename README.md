@@ -1,3 +1,5 @@
+<img src="icons/icon.svg" alt="Slime icon" width="96">
+
 # Slime
 
 Browser extension that fixes the Japanese IME double-display bug in Slite editor.
