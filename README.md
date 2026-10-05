@@ -1,3 +1,5 @@
+<img src="icons/icon.svg" alt="Slime icon" width="96">
+
 # Slime
 
 Browser extension that fixes the Japanese IME double-display bug in Slite editor.
@@ -9,6 +11,11 @@ Supports **Chrome**, **Edge**, and **Firefox**.
 When using Japanese IME (Input Method Editor) in Slite, composed text appears duplicated during input. This extension fixes that issue by properly handling composition events.
 
 ## Installation
+
+- **Chrome / Edge**: [Chrome Web Store](https://chromewebstore.google.com/detail/mnhgkeapcdceoahfeiidkffgkhpcbflc)
+- **Firefox**: [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/slime-ime/)
+
+To install a build from GitHub Releases instead, follow the steps below.
 
 ### Chrome / Edge
 
