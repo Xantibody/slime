@@ -15,7 +15,7 @@
   "project": ["src/**/*.ts", "scripts/**/*.ts", "e2e/**/*.{ts,js}"],
 
   // Tools that flake.nix's toolchain provides; they never appear in package.json
-  "ignoreBinaries": ["tsc", "oxlint", "treefmt", "agent-browser"],
+  "ignoreBinaries": ["tsc", "oxlint", "treefmt", "vale", "typos", "agent-browser"],
 
   // Read only through tsconfig.json's `types`, never by an import
   "ignoreDependencies": ["@types/chrome", "@types/firefox-webext-browser"],

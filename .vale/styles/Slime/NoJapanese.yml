@@ -1,0 +1,9 @@
+# Comments are written in English, like the README and the commit log. The
+# Japanese that reproduces the IME bug lives in string literals, which Vale
+# never sees, or in backticks, which the md format reads as code.
+extends: existence
+message: "Comments are English; '%s' is Japanese"
+level: error
+nonword: true
+tokens:
+  - '[\p{Hiragana}\p{Katakana}\p{Han}。、「」（）]+'

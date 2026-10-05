@@ -40,6 +40,8 @@
             pkgs.pnpm
             pkgs.oxlint
             pkgs.typescript
+            pkgs.vale
+            pkgs.typos
             treefmtEval.config.build.wrapper
           ];
         };
