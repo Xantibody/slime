@@ -1,0 +1,7 @@
+# English spelling in code, comments and strings. Non-ASCII text is ignored.
+[files]
+extend-exclude = ["pnpm-lock.yaml", "flake.lock", ".vale/styles/proselint/**"]
+
+[default.extend-words]
+# Slite is the product this extension fixes (also its domain, slite.com)
+slite = "slite"

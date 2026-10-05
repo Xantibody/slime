@@ -5,7 +5,7 @@
 // the only content it may ever hold is a single zero-width character. During
 // IME composition the browser writes the composing text straight into that
 // span, and on commit Slate inserts the text as a real leaf while the
-// placeholder keeps its copy — the user then sees 「大変だ体現だ体現」.
+// placeholder keeps its copy — the user then sees `大変だ体現だ体現`.
 //
 // Clearing marks on `compositionstart` is not enough on its own: a placeholder
 // that was already rendered stays in the DOM, and React can write the committed
@@ -28,7 +28,7 @@ export function hasResidualText(element: Element): boolean {
  *
  * The existing text node is reused rather than replaced: Slate and React hold
  * references to it, and swapping it out makes Slate re-read the DOM and
- * reinsert the very text this removes.
+ * reinsert the same text this removes.
  *
  * @param element - a `data-slate-mark-placeholder` span
  * @returns whether the placeholder actually had to be repaired

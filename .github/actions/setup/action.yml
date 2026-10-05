@@ -6,8 +6,9 @@ runs:
   steps:
     - uses: DeterminateSystems/nix-installer-action@v16
 
-    # 道具の一覧は flake.nix の `toolchain` が持つ。ここで名前を並べ直すと、
-    # devShell に足したのに CI で落ちる(あるいはその逆)という食い違いが起きる
+    # The tool list lives in flake.nix's `toolchain`. Listing names again here
+    # lets the two drift: a tool added to the devShell then fails in CI, or
+    # the other way round
     - name: Install the toolchain
       shell: bash
       run: nix profile install .#toolchain

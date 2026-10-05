@@ -8,11 +8,11 @@ import {
 } from "./mark-placeholder.ts";
 
 /**
- * The DOM Slite actually leaves behind after committing 「だ体現」, copied from a
+ * The DOM Slite actually leaves behind after committing `だ体現`, copied from a
  * Slite page saved while the bug was showing (the page itself is not in the
  * repository). The committed text lives in the `data-slate-string` leaf
  * while the mark placeholder — declared `data-slate-length="0"` — still holds a
- * duplicate of it, so the user sees 「大変だ体現だ体現」.
+ * duplicate of it, so the user sees `大変だ体現だ体現`.
  */
 const BROKEN_BLOCK = `
 <div class="slite-editor-block unstyled-block" data-type="unstyled">

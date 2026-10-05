@@ -30,8 +30,9 @@
           programs.nixfmt.enable = true;
         };
 
-        # 検査に使う道具立て。devShell と CI の両方がこれ一つを読む。
-        # 一覧をワークフロー側にも書くと、片方だけ足して片方で落ちる
+        # The tools the checks need. The devShell and CI both read this one
+        # list; a second copy in the workflows would let a tool be added to
+        # one side and fail on the other
         toolchain = pkgs.buildEnv {
           name = "slime-toolchain";
           paths = [
@@ -39,6 +40,8 @@
             pkgs.pnpm
             pkgs.oxlint
             pkgs.typescript
+            pkgs.vale
+            pkgs.typos
             treefmtEval.config.build.wrapper
           ];
         };
@@ -50,10 +53,11 @@
         packages = {
           inherit toolchain;
         }
-        # AMO で署名された xpi を配る。手元でビルドした xpi は未署名で、
-        # 通常版の Firefox は読み込まない。
-        # 初回公開までは URL が無いので、default そのものを出さない
-        # (空の URL で fetchurl を評価すると flake 全体の評価が落ちる)
+        # Ships the xpi signed by AMO. A locally built xpi is unsigned, and
+        # release Firefox will not load it.
+        # Until the first version is public there is no URL, so default is
+        # left out entirely (evaluating fetchurl with an empty URL breaks
+        # evaluation of the whole flake)
         // pkgs.lib.optionalAttrs (amoUrl != "") {
           default = pkgs.stdenv.mkDerivation {
             name = "slime-firefox-xpi";
@@ -79,8 +83,8 @@
         devShells.default = pkgs.mkShell {
           packages = [
             toolchain
-            # agent-browser は手で画面を触るときと pnpm e2e 用。
-            # CI では使わないので toolchain の外
+            # agent-browser is for poking at the screen by hand and for
+            # pnpm e2e. CI does not use it, so it stays out of toolchain
             pkgs.agent-browser
           ];
 

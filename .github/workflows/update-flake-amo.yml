@@ -1,7 +1,8 @@
 name: Update flake AMO URL
 
-# AMO の審査は数分から数日かかり、通過を知らせる webhook も無い。
-# リリースのジョブで待つ代わりに、定期的に見に行って flake.nix へ書き戻す
+# AMO review takes anywhere from minutes to days, and no webhook announces
+# that it passed. Rather than wait in the release job, poll and write the
+# result back to flake.nix
 on:
   schedule:
     - cron: "0 */6 * * *"
@@ -16,7 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 版の正はタグ(release.yml と同じ)。package.json は上げ忘れうるので見ない
+      # The tag is the source of the version (as in release.yml); package.json
+      # can be left behind, so it is not read
       - name: Get the latest released version
         env:
           GH_TOKEN: ${{ github.token }}
@@ -51,7 +53,7 @@ jobs:
         run: |
           sed -i "s|amoUrl = \".*\";|amoUrl = \"$AMO_URL\";|" flake.nix
 
-      # ハッシュを空にしてビルドさせ、fetchurl が報告する実際の値を拾う
+      # Build with an empty hash and pick up the real one fetchurl reports
       - name: Compute hash
         if: env.SKIP != 'true' && env.AMO_URL != ''
         run: |

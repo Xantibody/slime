@@ -1,12 +1,12 @@
 name: Checks
 
-# PR でもリリースでも同じ検査を通す。ここ一つに書いて両方から呼ぶ。
-# 片方にだけ足すと、通したつもりの検査がもう片方をすり抜ける
+# Pull requests and releases run the same checks, written once here and
+# called from both. A check added to only one path slips through the other
 on:
   workflow_call:
 
-# 直列に並べると全部がいちばん遅い1つの後ろにつながる。
-# 独立したジョブに分ければ待ち時間はいちばん遅いジョブの分だけになる
+# Chained, everything waits behind the slowest step. As independent jobs, the
+# wait is only as long as the slowest job
 jobs:
   static:
     name: Format / Lint / Types
@@ -16,8 +16,10 @@ jobs:
       - uses: ./.github/actions/setup
       - run: pnpm run fmt:check
       - run: pnpm run lint
+      - run: pnpm run lint:comments
       - run: pnpm run typecheck
-      # 使われていない export・ファイル・依存。oxlint は1ファイルしか見ないので拾えない
+      # Unused exports, files and dependencies. oxlint sees one file at a time
+      # and cannot catch them
       - run: pnpm run knip
 
   test:
@@ -36,7 +38,7 @@ jobs:
       - uses: ./.github/actions/setup
       - run: pnpm run build
 
-      # 生成物が壊れていないかは、リリース時に初めて気づきたくない
+      # A broken package should not first show up at release time
       - uses: actions/upload-artifact@v4
         with:
           name: extensions
@@ -45,6 +47,7 @@ jobs:
             dist/slime-firefox.xpi
           retention-days: 7
 
-# NOTE: pnpm e2e (agent-browser) はここに無い。実ブラウザを1つ落としてくるので
-# PR ごとに回すには重く、二重入力の再現そのものは jsdom のユニットテストが押さえている。
-# 手元で `pnpm e2e`、リリース前に一度通す運用
+# NOTE: pnpm e2e (agent-browser) is not here. It downloads a real browser,
+# which is too heavy for every pull request, and the jsdom unit tests already
+# pin down the duplicate-text reproduction. Run `pnpm e2e` locally, once
+# before each release

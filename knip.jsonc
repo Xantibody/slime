@@ -1,8 +1,9 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
 
-  // 拡張は「呼ばれる側」しかない。manifest.json と build スクリプトが指す
-  // ファイルが入口で、そこから辿れないものは本当に使われていない
+  // An extension is only ever called into. The files manifest.json and the
+  // build script point at are the entries; whatever they cannot reach is
+  // truly unused
   "entry": [
     "src/inject.ts",
     "src/content-script.ts",
@@ -13,9 +14,9 @@
   ],
   "project": ["src/**/*.ts", "scripts/**/*.ts", "e2e/**/*.{ts,js}"],
 
-  // flake.nix の toolchain が渡す道具。package.json には現れない
-  "ignoreBinaries": ["tsc", "oxlint", "treefmt", "agent-browser"],
+  // Tools that flake.nix's toolchain provides; they never appear in package.json
+  "ignoreBinaries": ["tsc", "oxlint", "treefmt", "vale", "typos", "agent-browser"],
 
-  // tsconfig.json の `types` から読まれるだけで、import 文には出てこない
+  // Read only through tsconfig.json's `types`, never by an import
   "ignoreDependencies": ["@types/chrome", "@types/firefox-webext-browser"],
 }

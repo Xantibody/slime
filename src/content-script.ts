@@ -1,4 +1,4 @@
-// Content Script: ページコンテキストにスクリプトを注入
+// Content script: injects inject.js into the page context
 import { getExtensionApi, isEmacsKeybindToggle } from "./extension-api.ts";
 import { EMACS_KEYBIND_ATTRIBUTE, EMACS_KEYBIND_EVENT, toAttributeValue } from "./page-channel.ts";
 
