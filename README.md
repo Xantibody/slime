@@ -12,6 +12,11 @@ When using Japanese IME (Input Method Editor) in Slite, composed text appears du
 
 ## Installation
 
+- **Chrome / Edge**: [Chrome Web Store](https://chromewebstore.google.com/detail/mnhgkeapcdceoahfeiidkffgkhpcbflc)
+- **Firefox**: [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/slime-ime/)
+
+To install a build from GitHub Releases instead, follow the steps below.
+
 ### Chrome / Edge
 
 1. Download `slime-chrome-vX.X.X.zip` from [Releases](https://github.com/Xantibody/slime/releases)
