@@ -16,6 +16,7 @@ jobs:
       - uses: ./.github/actions/setup
       - run: pnpm run fmt:check
       - run: pnpm run lint
+      - run: pnpm run lint:comments
       - run: pnpm run typecheck
       # Unused exports, files and dependencies. oxlint sees one file at a time
       # and cannot catch them
