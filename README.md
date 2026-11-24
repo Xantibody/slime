@@ -86,6 +86,8 @@ Click the extension icon to toggle Emacs-style cursor movement:
 
 - `src/ime-fix.ts` - Composition tracking and mark parking
 - `src/mark-placeholder.ts` - Placeholder repair and the MutationObserver guard
+- `src/composing-keydown.ts` - Keeps composing keys away from Slite's form fields
+- `src/composing-value.ts` - Keeps Slite's writes away from a composing field's value
 - `src/emacs-keybind.ts` - Emacs keybinding logic
 - `src/inject.ts` - Page-context entry point that wires the above together
 - `src/content-script.ts` - Injects `inject.js` into the page context

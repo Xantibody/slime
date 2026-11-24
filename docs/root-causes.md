@@ -9,6 +9,7 @@ can be matched against a known cause before anyone starts debugging.
 | -------------------------------------------------- | -------------------------------- | -------------------------------------------- | ------------------------------------------- |
 | Document body                                      | `大変だ体現だ体現`, display only | Slate's mark placeholder keeps a copy        | `src/ime-fix.ts`, `src/mark-placeholder.ts` |
 | Database row title                                 | `テストテスト`, saved as such    | Slite blurs the input on the composing Enter | `src/composing-keydown.ts`                  |
+| Search page                                        | `kおうdおう`, conversion breaks  | Slite writes the previous query back         | `src/composing-value.ts`                    |
 | Document body, Google Japanese Input before v1.0.0 | Duplicate display                | Not established                              | None known                                  |
 
 ## Document body: the mark placeholder keeps a copy
@@ -92,6 +93,66 @@ composition still ends the edit.
 The Slate editor's own contenteditable is left out: Slate tracks composition
 itself and reads composing keydowns to keep that state in sync.
 
+## Search page: the stale query ends the conversion
+
+Unlike the rows above, nothing is shown twice here: the conversion breaks
+after every letter. A page saved while it happened held
+`kおうdおうsいtえ▽▽nnkn gあ dえkいtあnい` in the search input, typed with an
+SKK-style IME. Each consonant is left as a letter and each vowel becomes kana
+on its own, so the composition was being committed after every keystroke.
+
+The search page (`data-test-id="searchPage"`) renders its input
+(`data-test-id="search-input"`) as a controlled React input whose value is the
+URL's `q`. Typing calls `setQuery`, which only navigates to the new URL
+(`replace`, `flushSync`). The page's store learns the new `q` in the screen
+controller's `useLayoutEffect` (`applyUrlState`), so each keystroke runs two
+commits:
+
+1. The route renders with the store still holding the previous `q`, and React
+   writes that stale value into the input.
+2. The layout effect updates the store, and React writes the new value.
+
+Outside composition this goes unnoticed while typing at the end of the query;
+typing in the middle moves the caret to the end. During composition the write
+in step 1 replaces the composing text, and Chrome ends the conversion without
+firing `compositionend`.
+
+The search modal is not affected: its controller keeps the query in its own
+store and updates it synchronously in `setQuery`. The search fields in
+settings for channels, user groups and members follow the search page's
+pattern (`navigate` with `flushSync`, the query learned in `applyUrlState`),
+so they should break the same way; the fix covers them too, but no user report
+has confirmed them.
+
+### How it was confirmed
+
+- The input component, `setQuery` and the `useLayoutEffect` that calls
+  `applyUrlState` were read in Slite's public chunks (React 19.3).
+- Logging composition and `input` events in the user's browser showed no
+  `compositionend` at all: each `compositionstart` followed an `input` with
+  `isComposing: true`, and the IME's next keystroke arrived as a plain
+  `input`.
+- Chrome's IME emulation (DevTools Protocol `Input.imeSetComposition`) on a
+  page that writes the previous value back on `input` gives the same event
+  sequence and leaves `kここ` for `こ`. Writing only `defaultValue`, which
+  React also does, leaves the conversion intact.
+- `e2e/slate-ime-fixture.html` replays the two writes against a real input.
+
+### The fix
+
+While an `<input>` or `<textarea>` is composing, its value belongs to the IME.
+Slime replaces the field's `value` property on `compositionstart` with one
+that reads as before and drops writes, and puts the original back on
+`compositionend`. React DOM keeps its value tracker as an own `value` property
+on the field, so that property is what gets saved and restored. The browser's
+own composition updates do not go through the setter. The guard is also
+released on `focusout`, since Chrome ends a composition without
+`compositionend` when the field moves in the DOM.
+
+The stale write in step 1 is dropped. The write in step 2 carries the same
+text the input already holds, so React skips it. Search still runs on the
+composing text, as it did before.
+
 ## Google Japanese Input before v1.0.0: cause not established
 
 Before the first release, Google Japanese Input still showed the duplicate on
@@ -127,6 +188,8 @@ attributed to the same `blur()`, but that was not confirmed separately.
 - Save the Slite page (complete) while the bug is visible, or right after.
   The editor's lazily loaded chunks are not saved; they are public under
   `https://assets.slite.com/app/stable/<chunk>.js`, named in DevTools stacks.
+  The CDN sends them brotli-compressed whatever the request asks for, so fetch
+  them with `curl --compressed`.
 - Log `compositionstart`, `compositionupdate`, `compositionend`, `beforeinput`
   and `input` on `document` in the capture phase. An `input` event after
   `compositionend` without a `beforeinput` means the composition was ended

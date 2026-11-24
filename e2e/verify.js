@@ -109,5 +109,12 @@ function tick() {
   pressEnterIn(rowTitle, false);
   result.rowTitleAfterPlainEnter = focusState();
 
+  // --- Search page input --------------------------------------------------
+  // The page writes its previous query back on every keystroke; during
+  // composition that write is what ends the conversion after each letter.
+  result.searchDuringComposition = globalThis.simulateSearchKeystroke("k");
+  document.querySelector("#search-input").value = "";
+  result.searchAfterComposition = document.querySelector("#search-input").value;
+
   return JSON.stringify(result, null, 2);
 })();
