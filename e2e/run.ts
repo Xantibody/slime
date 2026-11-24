@@ -51,6 +51,7 @@ check("duplicate survives a late re-render", broken["afterLateRerender"], "大�
 check("marks are never parked", broken["marksDuringComposition"], '{"bold":true}');
 check("Ctrl+F does nothing", broken["emacsForward"], "committed:0");
 check("composing Enter blurs the row title", broken["rowTitleAfterComposingEnter"], "blurred");
+check("stale query overwrites the composing text", broken["searchDuringComposition"], "");
 
 process.stdout.write("\nWith the fix:\n");
 const fixed = runFixture("1");
@@ -71,6 +72,8 @@ check("toggling off restores the browser default", fixed["emacsAfterToggleOff"],
 check("committed text is untouched", fixed["committedText"], "大変だ体現です");
 check("composing Enter keeps the row title", fixed["rowTitleAfterComposingEnter"], "focused");
 check("plain Enter still ends editing", fixed["rowTitleAfterPlainEnter"], "blurred");
+check("composing text survives the stale query", fixed["searchDuringComposition"], "k");
+check("the page writes the input again afterwards", fixed["searchAfterComposition"], "");
 
 browser("close");
 

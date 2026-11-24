@@ -41,6 +41,44 @@
       </div>
     </div>
 
+    <!--
+      The search page's input: React renders it from the URL's `q`, which the
+      page's store learns only in a layout effect, so each keystroke first
+      writes the previous `q` back into the input, then the new one.
+    -->
+    <input id="search-input" data-test-id="search-input" />
+
+    <script>
+      const searchInput = document.getElementById("search-input");
+      const inheritedValue = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value");
+      // React DOM's value tracker, an own accessor on the input.
+      Object.defineProperty(searchInput, "value", {
+        configurable: true,
+        get: () => inheritedValue.get.call(searchInput),
+        set: (value) => inheritedValue.set.call(searchInput, value),
+      });
+      let searchQuery = "";
+      searchInput.addEventListener("input", () => {
+        const next = inheritedValue.get.call(searchInput);
+        searchInput.value = searchQuery;
+        // Recorded so the test can see what the IME was left with.
+        window.searchValueAfterStaleWrite = inheritedValue.get.call(searchInput);
+        searchQuery = next;
+        searchInput.value = searchQuery;
+      });
+
+      // Replays one keystroke of a conversion: the browser puts the composing
+      // text into the input without the page's setter, then fires `input`.
+      window.simulateSearchKeystroke = function simulateSearchKeystroke(text) {
+        searchInput.dispatchEvent(new CompositionEvent("compositionstart", { bubbles: true }));
+        inheritedValue.set.call(searchInput, text);
+        searchInput.dispatchEvent(new InputEvent("input", { bubbles: true, isComposing: true }));
+        const afterStaleWrite = window.searchValueAfterStaleWrite;
+        searchInput.dispatchEvent(new CompositionEvent("compositionend", { bubbles: true }));
+        return afterStaleWrite;
+      };
+    </script>
+
     <script>
       document.getElementById("row-title-cell").addEventListener("keydown", (event) => {
         if (event.key === "Enter") {

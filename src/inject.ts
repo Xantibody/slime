@@ -1,5 +1,6 @@
 // Slime - page context entry point
 import { createComposingKeyShield } from "./composing-keydown.ts";
+import { createComposingValueGuard } from "./composing-value.ts";
 import { mapToKey, shouldIntercept } from "./emacs-keybind.ts";
 import type { MappedKey } from "./emacs-keybind.ts";
 import { createIMEFix, getEditorFromRefs } from "./ime-fix.ts";
@@ -57,6 +58,10 @@ document.addEventListener(
 // Form fields outside Slate (database row titles) duplicate the commit when
 // the page reacts to the Enter that confirms a conversion.
 createComposingKeyShield().start();
+
+// The search page writes a stale value into its input on every keystroke,
+// which ends the conversion after each letter.
+createComposingValueGuard().start();
 
 // === Emacs Keybind ===
 type CursorMove = readonly [
