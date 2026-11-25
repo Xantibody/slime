@@ -3,8 +3,19 @@ import {
   EMACS_KEYBIND_STORAGE_KEY,
   PAUSED_STORAGE_KEY,
   emacsKeybindFrom,
+  pausedBadgeText,
   pausedFrom,
 } from "./settings.ts";
+
+describe(pausedBadgeText, () => {
+  it("should leave the toolbar icon bare while Slime runs", () => {
+    expect(pausedBadgeText(false)).toBe("");
+  });
+
+  it("should mark the toolbar icon while Slime is paused", () => {
+    expect(pausedBadgeText(true)).toBe("OFF");
+  });
+});
 
 describe(emacsKeybindFrom, () => {
   it("should be off when nothing has been stored yet", () => {

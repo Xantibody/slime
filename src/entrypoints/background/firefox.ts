@@ -1,4 +1,6 @@
-// Enable action icon only on Slite pages (Firefox version)
+// Enable action icon only on Slite pages, and mark it while paused (Firefox
+// version)
+import { PAUSED_STORAGE_KEY, pausedBadgeText, pausedFrom } from "../../settings/settings.ts";
 
 const SLITE_PATTERN = /^https:\/\/[^/]*\.slite\.com\//u;
 
@@ -40,3 +42,16 @@ void (async (): Promise<void> => {
     updateIcon(tab.id, tab.url);
   }
 })();
+
+// Mark the icon while paused, on every start of the event page and on change
+async function showPause(): Promise<void> {
+  const paused = pausedFrom(await browser.storage.local.get(PAUSED_STORAGE_KEY));
+  await browser.action.setBadgeText({ text: pausedBadgeText(paused) });
+}
+
+void showPause();
+browser.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName === "local" && Object.hasOwn(changes, PAUSED_STORAGE_KEY)) {
+    void showPause();
+  }
+});

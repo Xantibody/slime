@@ -1,5 +1,6 @@
-// Settings shared by the popup, which writes them, and the content script,
-// which relays them to the page. Storage is their only source.
+// Settings shared by the popup, which writes them, the content script, which
+// relays them to the page, and the background scripts, which show the pause
+// on the toolbar icon. Storage is their only source.
 
 export const EMACS_KEYBIND_STORAGE_KEY = "emacsKeybindEnabled";
 export const PAUSED_STORAGE_KEY = "paused";
@@ -13,6 +14,17 @@ export const PAUSED_STORAGE_KEY = "paused";
  */
 export function pausedFrom(stored: Readonly<Record<string, unknown>>): boolean {
   return stored[PAUSED_STORAGE_KEY] === true;
+}
+
+/**
+ * The badge on the toolbar icon, so a pause is visible without opening the
+ * popup.
+ *
+ * @param paused - whether Slime is paused
+ * @returns the badge text, empty for none
+ */
+export function pausedBadgeText(paused: boolean): string {
+  return paused ? "OFF" : "";
 }
 
 /**
