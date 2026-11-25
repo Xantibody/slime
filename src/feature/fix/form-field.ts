@@ -33,8 +33,11 @@ type FormField = HTMLInputElement | HTMLTextAreaElement;
 /**
  * The `value` property each guarded field had of its own before the guard,
  * `undefined` when it had none. React DOM keeps its value tracker there.
+ *
+ * A Map rather than a WeakMap, so `stop` can hand every field still composing
+ * back to the page; a field leaves it on its own `compositionend` or `focusout`.
  */
-type OwnValues = WeakMap<FormField, PropertyDescriptor | undefined>;
+type OwnValues = Map<FormField, PropertyDescriptor | undefined>;
 
 // Only plain form fields: the Slate editor keeps its own composition state,
 // reads composing keydowns to keep it in sync, and is a contenteditable with
@@ -79,7 +82,7 @@ function releaseValue(ownValues: OwnValues, field: FormField): void {
 }
 
 export function createFormFieldGuard(root: Document = document): FormFieldGuard {
-  const ownValues: OwnValues = new WeakMap();
+  const ownValues: OwnValues = new Map();
 
   function handleCompositionStart(event: Event): void {
     if (isFormField(event.target)) {
@@ -110,6 +113,11 @@ export function createFormFieldGuard(root: Document = document): FormFieldGuard 
       root.removeEventListener("compositionstart", handleCompositionStart, true);
       for (const type of releaseEvents) {
         root.removeEventListener(type, handleRelease, true);
+      }
+      // No release event will reach a field still composing once the
+      // listeners are gone, so it would keep dropping the page's writes.
+      for (const field of ownValues.keys()) {
+        releaseValue(ownValues, field);
       }
     },
   };
