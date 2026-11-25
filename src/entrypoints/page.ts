@@ -1,8 +1,7 @@
 // Slime - page context entry point
 import { createComposingKeyShield } from "../feature/fix/composing-keydown.ts";
 import { createComposingValueGuard } from "../feature/fix/composing-value.ts";
-import { mapToKey, shouldIntercept } from "../feature/extra/emacs-keybind.ts";
-import type { MappedKey } from "../feature/extra/emacs-keybind.ts";
+import { createEmacsKeybind } from "../feature/extra/emacs-keybind.ts";
 import { createIMEFix, getEditorFromRefs } from "../feature/fix/editor-marks.ts";
 import type { EditorRefEntry } from "../feature/fix/editor-marks.ts";
 import { createPlaceholderGuard } from "../feature/fix/mark-placeholder.ts";
@@ -64,57 +63,15 @@ createComposingKeyShield().start();
 createComposingValueGuard().start();
 
 // === Emacs Keybind ===
-type CursorMove = readonly [
-  alter: "move",
-  direction: "forward" | "backward",
-  granularity: "character" | "line" | "lineboundary",
-];
-
-const CURSOR_MOVES: Readonly<Record<MappedKey, CursorMove>> = {
-  ArrowRight: ["move", "forward", "character"],
-  ArrowLeft: ["move", "backward", "character"],
-  ArrowDown: ["move", "forward", "line"],
-  ArrowUp: ["move", "backward", "line"],
-  Home: ["move", "backward", "lineboundary"],
-  End: ["move", "forward", "lineboundary"],
-};
-
-let emacsKeybindEnabled = false;
+const emacsKeybind = createEmacsKeybind();
+emacsKeybind.start();
 
 globalThis.addEventListener(EMACS_KEYBIND_EVENT, () => {
-  emacsKeybindEnabled = isEnabledAttributeValue(
+  const enabled = isEnabledAttributeValue(
     document.documentElement.getAttribute(EMACS_KEYBIND_ATTRIBUTE),
   );
-  log("Emacs keybind:", emacsKeybindEnabled ? "ON" : "OFF");
+  emacsKeybind.setEnabled(enabled);
+  log("Emacs keybind:", enabled ? "ON" : "OFF");
 });
-
-function moveCursor(key: MappedKey): void {
-  const selection = globalThis.getSelection();
-  if (!selection || selection.rangeCount === 0) {
-    return;
-  }
-
-  const [alter, direction, granularity] = CURSOR_MOVES[key];
-  selection.modify(alter, direction, granularity);
-}
-
-document.addEventListener(
-  "keydown",
-  (event) => {
-    if (!shouldIntercept(event, emacsKeybindEnabled)) {
-      return;
-    }
-
-    event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-
-    const key = mapToKey(event.key);
-    if (key !== null) {
-      moveCursor(key);
-    }
-  },
-  true,
-);
 
 log("Loaded");

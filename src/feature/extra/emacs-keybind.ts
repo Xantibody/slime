@@ -1,4 +1,7 @@
-// Emacs Keybind - Core Logic
+// Emacs-style cursor keys (Ctrl+F/B/N/P/A/E), off until the user turns them on.
+
+import { moveCursor } from "./cursor.ts";
+import type { CursorMove } from "./cursor.ts";
 
 const KEY_MAP = {
   f: "ArrowRight",
@@ -10,7 +13,16 @@ const KEY_MAP = {
 } as const satisfies Record<string, string>;
 
 type EmacsKey = keyof typeof KEY_MAP;
-export type MappedKey = (typeof KEY_MAP)[EmacsKey];
+type MappedKey = (typeof KEY_MAP)[EmacsKey];
+
+const CURSOR_MOVES: Readonly<Record<MappedKey, CursorMove>> = {
+  ArrowRight: ["move", "forward", "character"],
+  ArrowLeft: ["move", "backward", "character"],
+  ArrowDown: ["move", "forward", "line"],
+  ArrowUp: ["move", "backward", "line"],
+  Home: ["move", "backward", "lineboundary"],
+  End: ["move", "forward", "lineboundary"],
+};
 
 /** The parts of a `KeyboardEvent` the interception decision depends on. */
 export interface KeyEventLike {
@@ -40,4 +52,41 @@ export function shouldIntercept(event: KeyEventLike, enabled: boolean): boolean 
 
 export function mapToKey(key: string): MappedKey | null {
   return isEmacsKey(key) ? KEY_MAP[key] : null;
+}
+
+export interface EmacsKeybind {
+  start: () => void;
+  stop: () => void;
+  setEnabled: (enabled: boolean) => void;
+}
+
+export function createEmacsKeybind(root: Document = document): EmacsKeybind {
+  let enabled = false;
+
+  function handleKeydown(event: KeyboardEvent): void {
+    if (!shouldIntercept(event, enabled)) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    const key = mapToKey(event.key);
+    if (key !== null) {
+      moveCursor(CURSOR_MOVES[key]);
+    }
+  }
+
+  return {
+    start: () => {
+      root.addEventListener("keydown", handleKeydown, true);
+    },
+    stop: () => {
+      root.removeEventListener("keydown", handleKeydown, true);
+    },
+    setEnabled: (next) => {
+      enabled = next;
+    },
+  };
 }
