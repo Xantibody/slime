@@ -1,10 +1,7 @@
-// Content script: injects inject.js into the page context
-import { isEmacsKeybindToggle } from "../settings/settings.ts";
-import {
-  EMACS_KEYBIND_ATTRIBUTE,
-  EMACS_KEYBIND_EVENT,
-  toAttributeValue,
-} from "../settings/page-channel.ts";
+// Content script: injects inject.js into the page context and relays the
+// stored settings to it
+import { publishEmacsKeybind } from "../settings/page-channel.ts";
+import { EMACS_KEYBIND_STORAGE_KEY, emacsKeybindFrom } from "../settings/settings.ts";
 
 const script = document.createElement("script");
 script.src = browser.runtime.getURL("inject.js");
@@ -13,12 +10,15 @@ script.addEventListener("load", () => {
 });
 (document.head ?? document.documentElement).append(script);
 
-// Listen for messages from the background script
-browser.runtime.onMessage.addListener((message: unknown) => {
-  if (!isEmacsKeybindToggle(message)) {
-    return;
-  }
+async function relayEmacsKeybind(): Promise<void> {
+  publishEmacsKeybind(emacsKeybindFrom(await browser.storage.local.get(EMACS_KEYBIND_STORAGE_KEY)));
+}
 
-  document.documentElement.setAttribute(EMACS_KEYBIND_ATTRIBUTE, toAttributeValue(message.enabled));
-  globalThis.dispatchEvent(new CustomEvent(EMACS_KEYBIND_EVENT));
+// Storage is the only source of the setting: read it once for this page, and
+// again whenever the popup changes it, in whichever tab that happens
+void relayEmacsKeybind();
+browser.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName === "local" && Object.hasOwn(changes, EMACS_KEYBIND_STORAGE_KEY)) {
+    void relayEmacsKeybind();
+  }
 });
