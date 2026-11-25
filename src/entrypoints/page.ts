@@ -1,9 +1,8 @@
 // Slime - page context entry point
-import { createComposingKeyShield } from "../feature/fix/composing-keydown.ts";
-import { createComposingValueGuard } from "../feature/fix/composing-value.ts";
 import { createEmacsKeybind } from "../feature/extra/emacs-keybind.ts";
 import { createIMEFix, getEditorFromRefs } from "../feature/fix/editor-marks.ts";
 import type { EditorRefEntry } from "../feature/fix/editor-marks.ts";
+import { createFormFieldGuard } from "../feature/fix/form-field.ts";
 import { createPlaceholderGuard } from "../feature/fix/mark-placeholder.ts";
 import {
   EMACS_KEYBIND_ATTRIBUTE,
@@ -54,13 +53,10 @@ document.addEventListener(
   true,
 );
 
-// Form fields outside Slate (database row titles) duplicate the commit when
-// the page reacts to the Enter that confirms a conversion.
-createComposingKeyShield().start();
-
-// The search page writes a stale value into its input on every keystroke,
-// which ends the conversion after each letter.
-createComposingValueGuard().start();
+// Form fields outside Slate: database row titles duplicate the commit when the
+// page reacts to the Enter that confirms a conversion, and the search page
+// writes a stale value into its input on every keystroke.
+createFormFieldGuard().start();
 
 // === Emacs Keybind ===
 const emacsKeybind = createEmacsKeybind();

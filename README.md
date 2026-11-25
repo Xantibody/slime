@@ -93,8 +93,7 @@ Click the extension icon to toggle Emacs-style cursor movement:
 - `src/feature/fix/` - The fixes for each duplicate-text bug ([docs/root-causes.md](docs/root-causes.md))
   - `editor-marks.ts` - Composition tracking and mark parking
   - `mark-placeholder.ts` - Placeholder repair and the MutationObserver guard
-  - `composing-keydown.ts` - Keeps composing keys away from Slite's form fields
-  - `composing-value.ts` - Keeps Slite's writes away from a composing field's value
+  - `form-field.ts` - Keeps composing keys and Slite's stale writes away from a composing form field
 - `src/feature/extra/emacs-keybind.ts` - Emacs keybinding logic
 - `src/settings/` - Storage keys and messages, and the content script to page channel
 - `build/` - esbuild bundling into dist/ and manifest generation for Chrome/Firefox

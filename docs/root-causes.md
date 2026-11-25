@@ -8,8 +8,8 @@ can be matched against a known cause before anyone starts debugging.
 | Where                                              | What the user sees               | Cause                                        | Fix in Slime (`src/feature/fix/`)        |
 | -------------------------------------------------- | -------------------------------- | -------------------------------------------- | ---------------------------------------- |
 | Document body                                      | `大変だ体現だ体現`, display only | Slate's mark placeholder keeps a copy        | `editor-marks.ts`, `mark-placeholder.ts` |
-| Database row title                                 | `テストテスト`, saved as such    | Slite blurs the input on the composing Enter | `composing-keydown.ts`                   |
-| Search page                                        | `kおうdおう`, conversion breaks  | Slite writes the previous query back         | `composing-value.ts`                     |
+| Database row title                                 | `テストテスト`, saved as such    | Slite blurs the input on the composing Enter | `form-field.ts` (keys)                   |
+| Search page                                        | `kおうdおう`, conversion breaks  | Slite writes the previous query back         | `form-field.ts` (value writes)           |
 | Document body, Google Japanese Input before v1.0.0 | Duplicate display                | Not established                              | None known                               |
 
 ## Document body: the mark placeholder keeps a copy
