@@ -4,7 +4,7 @@
 
 Browser extension that fixes the Japanese IME double-display bug in Slite editor.
 
-Supports **Chrome**, **Edge**, and **Firefox**.
+Supports **Chrome** and **Edge** 148 or later, and **Firefox**.
 
 ## Problem
 
