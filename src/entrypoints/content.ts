@@ -1,6 +1,6 @@
 // Content script: injects inject.js into the page context and relays the
 // stored settings to it
-import { publishEmacsKeybind } from "../settings/page-channel.ts";
+import { EMACS_KEYBIND, publish } from "../settings/page-channel.ts";
 import { EMACS_KEYBIND_STORAGE_KEY, emacsKeybindFrom } from "../settings/settings.ts";
 
 const script = document.createElement("script");
@@ -11,7 +11,10 @@ script.addEventListener("load", () => {
 (document.head ?? document.documentElement).append(script);
 
 async function relayEmacsKeybind(): Promise<void> {
-  publishEmacsKeybind(emacsKeybindFrom(await browser.storage.local.get(EMACS_KEYBIND_STORAGE_KEY)));
+  publish(
+    EMACS_KEYBIND,
+    emacsKeybindFrom(await browser.storage.local.get(EMACS_KEYBIND_STORAGE_KEY)),
+  );
 }
 
 // Storage is the only source of the setting: read it once for this page, and

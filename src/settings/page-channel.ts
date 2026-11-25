@@ -7,39 +7,50 @@
 // The attribute also outlives the event: the page script is injected through
 // a `<script>` tag and may run before or after the content script has read
 // storage, so a subscriber reads the attribute once on start and again on
-// every event.
+// every event. A missing attribute reads as off, so every setting carried
+// here must default to off.
 
-export const EMACS_KEYBIND_ATTRIBUTE = "data-slime-emacs";
-const EMACS_KEYBIND_EVENT = "slime:emacs-keybind";
+/** One on/off setting as it travels to the page. */
+export interface PageSetting {
+  readonly attribute: string;
+  readonly event: string;
+}
 
-const ENABLED = "on";
-const DISABLED = "off";
+export const EMACS_KEYBIND: PageSetting = {
+  attribute: "data-slime-emacs",
+  event: "slime:emacs-keybind",
+};
+
+const ON = "on";
+const OFF = "off";
 
 /**
- * Hand the Emacs keybind setting to the page. Called from the content script.
+ * Hand a setting to the page. Called from the content script.
  *
- * @param enabled - the setting as stored
+ * @param setting - which setting
+ * @param on - its value as stored
  */
-export function publishEmacsKeybind(enabled: boolean): void {
-  document.documentElement.setAttribute(EMACS_KEYBIND_ATTRIBUTE, enabled ? ENABLED : DISABLED);
-  globalThis.dispatchEvent(new CustomEvent(EMACS_KEYBIND_EVENT));
+export function publish(setting: PageSetting, on: boolean): void {
+  document.documentElement.setAttribute(setting.attribute, on ? ON : OFF);
+  globalThis.dispatchEvent(new CustomEvent(setting.event));
 }
 
 /**
- * Follow the Emacs keybind setting from the page. Called from the page script.
+ * Follow a setting from the page. Called from the page script.
  *
- * @param listener - called at once with the current setting, then on every change
+ * @param setting - which setting
+ * @param listener - called at once with the current value, then on every change
  * @returns a function that stops following
  */
-export function subscribeEmacsKeybind(listener: (enabled: boolean) => void): () => void {
+export function subscribe(setting: PageSetting, listener: (on: boolean) => void): () => void {
   function notify(): void {
-    listener(document.documentElement.getAttribute(EMACS_KEYBIND_ATTRIBUTE) === ENABLED);
+    listener(document.documentElement.getAttribute(setting.attribute) === ON);
   }
 
-  globalThis.addEventListener(EMACS_KEYBIND_EVENT, notify);
+  globalThis.addEventListener(setting.event, notify);
   notify();
 
   return () => {
-    globalThis.removeEventListener(EMACS_KEYBIND_EVENT, notify);
+    globalThis.removeEventListener(setting.event, notify);
   };
 }

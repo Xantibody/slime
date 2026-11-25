@@ -4,7 +4,7 @@ import { createIMEFix, getEditorFromRefs } from "../feature/fix/editor-marks.ts"
 import type { EditorRefEntry } from "../feature/fix/editor-marks.ts";
 import { createFormFieldGuard } from "../feature/fix/form-field.ts";
 import { createPlaceholderGuard } from "../feature/fix/mark-placeholder.ts";
-import { subscribeEmacsKeybind } from "../settings/page-channel.ts";
+import { EMACS_KEYBIND, subscribe } from "../settings/page-channel.ts";
 
 /** Slate publishes its live editor instances on the page's global object. */
 interface SlateGlobal {
@@ -58,7 +58,7 @@ createFormFieldGuard().start();
 const emacsKeybind = createEmacsKeybind();
 emacsKeybind.start();
 
-subscribeEmacsKeybind((enabled) => {
+subscribe(EMACS_KEYBIND, (enabled) => {
   emacsKeybind.setEnabled(enabled);
   log("Emacs keybind:", enabled ? "ON" : "OFF");
 });
