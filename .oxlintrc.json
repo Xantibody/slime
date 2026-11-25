@@ -80,7 +80,7 @@
   },
   "overrides": [
     {
-      "files": ["scripts/**/*.ts", "e2e/**/*.ts", "vitest.config.ts"],
+      "files": ["build/**/*.ts", "e2e/**/*.ts", "vitest.config.ts"],
       "rules": {
         // Build and e2e tooling runs in Node, synchronously, and reaches into src/.
         "node/no-sync": "off",
@@ -95,6 +95,14 @@
       }
     },
     {
+      "files": ["src/entrypoints/**/*.ts"],
+      "rules": {
+        // An entry assembles feature/ and settings/. Everything else may only
+        // import downward, which keeps feature/ from reaching back into them.
+        "import/no-relative-parent-imports": "off"
+      }
+    },
+    {
       "files": ["e2e/**/*.js"],
       "rules": {
         // agent-browser evaluates this as a classic script inside the page.
@@ -103,7 +111,7 @@
       }
     },
     {
-      "files": ["src/**/*.test.ts"],
+      "files": ["src/**/*.test.ts", "build/**/*.test.ts"],
       "rules": {
         "max-lines-per-function": "off",
         "max-nested-callbacks": "off",

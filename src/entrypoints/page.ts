@@ -1,16 +1,16 @@
 // Slime - page context entry point
-import { createComposingKeyShield } from "./composing-keydown.ts";
-import { createComposingValueGuard } from "./composing-value.ts";
-import { mapToKey, shouldIntercept } from "./emacs-keybind.ts";
-import type { MappedKey } from "./emacs-keybind.ts";
-import { createIMEFix, getEditorFromRefs } from "./ime-fix.ts";
-import type { EditorRefEntry } from "./ime-fix.ts";
-import { createPlaceholderGuard } from "./mark-placeholder.ts";
+import { createComposingKeyShield } from "../feature/fix/composing-keydown.ts";
+import { createComposingValueGuard } from "../feature/fix/composing-value.ts";
+import { mapToKey, shouldIntercept } from "../feature/extra/emacs-keybind.ts";
+import type { MappedKey } from "../feature/extra/emacs-keybind.ts";
+import { createIMEFix, getEditorFromRefs } from "../feature/fix/editor-marks.ts";
+import type { EditorRefEntry } from "../feature/fix/editor-marks.ts";
+import { createPlaceholderGuard } from "../feature/fix/mark-placeholder.ts";
 import {
   EMACS_KEYBIND_ATTRIBUTE,
   EMACS_KEYBIND_EVENT,
   isEnabledAttributeValue,
-} from "./page-channel.ts";
+} from "../settings/page-channel.ts";
 
 /** Slate publishes its live editor instances on the page's global object. */
 interface SlateGlobal {

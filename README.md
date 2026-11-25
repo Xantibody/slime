@@ -84,18 +84,20 @@ Click the extension icon to toggle Emacs-style cursor movement:
 
 ## Files
 
-- `src/ime-fix.ts` - Composition tracking and mark parking
-- `src/mark-placeholder.ts` - Placeholder repair and the MutationObserver guard
-- `src/composing-keydown.ts` - Keeps composing keys away from Slite's form fields
-- `src/composing-value.ts` - Keeps Slite's writes away from a composing field's value
-- `src/emacs-keybind.ts` - Emacs keybinding logic
-- `src/inject.ts` - Page-context entry point that wires the above together
-- `src/content-script.ts` - Injects `inject.js` into the page context
-- `src/build/manifest.ts` - Manifest generation for Chrome/Firefox
-- `src/background.chrome.ts` - Chrome background script (declarativeContent API)
-- `src/background.firefox.ts` - Firefox background script (tabs API)
-- `src/popup.html` / `src/popup.ts` - Toggle UI for Emacs keybindings
-- `scripts/build.ts` - esbuild bundling into dist/
+- `src/entrypoints/` - What the browser runs; each file only wires the parts below
+  - `page.ts` - Page-context entry point, bundled as `inject.js`
+  - `content.ts` - Content script that injects `inject.js` into the page context
+  - `popup/` - Toggle UI for Emacs keybindings
+  - `background/chrome.ts` - Chrome background script (declarativeContent API)
+  - `background/firefox.ts` - Firefox background script (tabs API)
+- `src/feature/fix/` - The fixes for each duplicate-text bug ([docs/root-causes.md](docs/root-causes.md))
+  - `editor-marks.ts` - Composition tracking and mark parking
+  - `mark-placeholder.ts` - Placeholder repair and the MutationObserver guard
+  - `composing-keydown.ts` - Keeps composing keys away from Slite's form fields
+  - `composing-value.ts` - Keeps Slite's writes away from a composing field's value
+- `src/feature/extra/emacs-keybind.ts` - Emacs keybinding logic
+- `src/settings/` - Storage keys and messages, and the content script to page channel
+- `build/` - esbuild bundling into dist/ and manifest generation for Chrome/Firefox
 - `e2e/` - Browser-driven verification (see [Development](#development))
 
 ## Development

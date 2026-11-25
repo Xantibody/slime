@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { createIMEFix, getEditorFromRefs } from "./ime-fix.ts";
-import type { EditorRefEntry, IMEFix, SlateEditor } from "./ime-fix.ts";
+import { createIMEFix, getEditorFromRefs } from "./editor-marks.ts";
+import type { EditorRefEntry, IMEFix, SlateEditor } from "./editor-marks.ts";
 
 describe(createIMEFix, () => {
   let mockEditor: SlateEditor;

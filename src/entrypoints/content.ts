@@ -1,6 +1,10 @@
 // Content script: injects inject.js into the page context
-import { isEmacsKeybindToggle } from "./extension-api.ts";
-import { EMACS_KEYBIND_ATTRIBUTE, EMACS_KEYBIND_EVENT, toAttributeValue } from "./page-channel.ts";
+import { isEmacsKeybindToggle } from "../settings/settings.ts";
+import {
+  EMACS_KEYBIND_ATTRIBUTE,
+  EMACS_KEYBIND_EVENT,
+  toAttributeValue,
+} from "../settings/page-channel.ts";
 
 const script = document.createElement("script");
 script.src = browser.runtime.getURL("inject.js");

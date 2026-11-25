@@ -1,5 +1,5 @@
-import { EMACS_KEYBIND_STORAGE_KEY, EMACS_KEYBIND_TOGGLE } from "./extension-api.ts";
-import type { EmacsKeybindToggleMessage } from "./extension-api.ts";
+import { EMACS_KEYBIND_STORAGE_KEY, EMACS_KEYBIND_TOGGLE } from "../../settings/settings.ts";
+import type { EmacsKeybindToggleMessage } from "../../settings/settings.ts";
 
 const toggle = document.querySelector("#emacsToggle");
 if (!(toggle instanceof HTMLInputElement)) {

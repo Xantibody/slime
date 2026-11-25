@@ -5,12 +5,12 @@ place, and each place has its own cause. This page records what was found for
 each, how it was confirmed, and what Slime does about it, so the next report
 can be matched against a known cause before anyone starts debugging.
 
-| Where                                              | What the user sees               | Cause                                        | Fix in Slime                                |
-| -------------------------------------------------- | -------------------------------- | -------------------------------------------- | ------------------------------------------- |
-| Document body                                      | `大変だ体現だ体現`, display only | Slate's mark placeholder keeps a copy        | `src/ime-fix.ts`, `src/mark-placeholder.ts` |
-| Database row title                                 | `テストテスト`, saved as such    | Slite blurs the input on the composing Enter | `src/composing-keydown.ts`                  |
-| Search page                                        | `kおうdおう`, conversion breaks  | Slite writes the previous query back         | `src/composing-value.ts`                    |
-| Document body, Google Japanese Input before v1.0.0 | Duplicate display                | Not established                              | None known                                  |
+| Where                                              | What the user sees               | Cause                                        | Fix in Slime (`src/feature/fix/`)        |
+| -------------------------------------------------- | -------------------------------- | -------------------------------------------- | ---------------------------------------- |
+| Document body                                      | `大変だ体現だ体現`, display only | Slate's mark placeholder keeps a copy        | `editor-marks.ts`, `mark-placeholder.ts` |
+| Database row title                                 | `テストテスト`, saved as such    | Slite blurs the input on the composing Enter | `composing-keydown.ts`                   |
+| Search page                                        | `kおうdおう`, conversion breaks  | Slite writes the previous query back         | `composing-value.ts`                     |
+| Document body, Google Japanese Input before v1.0.0 | Duplicate display                | Not established                              | None known                               |
 
 ## Document body: the mark placeholder keeps a copy
 

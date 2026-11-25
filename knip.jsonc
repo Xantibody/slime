@@ -5,14 +5,14 @@
   // build script point at are the entries; whatever they cannot reach is
   // truly unused
   "entry": [
-    "src/inject.ts",
-    "src/content-script.ts",
-    "src/popup.ts",
-    "src/background.chrome.ts",
-    "src/background.firefox.ts",
+    "src/entrypoints/page.ts",
+    "src/entrypoints/content.ts",
+    "src/entrypoints/popup/main.ts",
+    "src/entrypoints/background/chrome.ts",
+    "src/entrypoints/background/firefox.ts",
     "e2e/verify.js",
   ],
-  "project": ["src/**/*.ts", "scripts/**/*.ts", "e2e/**/*.{ts,js}"],
+  "project": ["src/**/*.ts", "build/**/*.ts", "e2e/**/*.{ts,js}"],
 
   // Tools that flake.nix's toolchain provides; they never appear in package.json
   "ignoreBinaries": ["tsc", "oxlint", "treefmt", "vale", "typos", "agent-browser"],
