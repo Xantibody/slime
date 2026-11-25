@@ -13,6 +13,11 @@ function pressEnterIn(target, isComposing) {
   );
 }
 
+function setPaused(paused) {
+  document.documentElement.dataset.slimePaused = paused ? "on" : "off";
+  globalThis.dispatchEvent(new CustomEvent("slime:paused"));
+}
+
 function tick() {
   // oxlint-disable-next-line promise/avoid-new -- there is no promise-based timer in the page context
   return new Promise((resolve) => {
@@ -115,6 +120,18 @@ function tick() {
   result.searchDuringComposition = globalThis.simulateSearchKeystroke("k");
   document.querySelector("#search-input").value = "";
   result.searchAfterComposition = document.querySelector("#search-input").value;
+
+  // --- Pause ----------------------------------------------------------------
+  // While paused every fix stands down, and resuming brings them back.
+  setPaused(true);
+  rowTitle.focus();
+  pressEnterIn(rowTitle, true);
+  result.rowTitleWhilePaused = focusState();
+
+  setPaused(false);
+  rowTitle.focus();
+  pressEnterIn(rowTitle, true);
+  result.rowTitleAfterResume = focusState();
 
   return JSON.stringify(result, null, 2);
 })();

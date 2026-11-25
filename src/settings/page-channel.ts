@@ -21,6 +21,11 @@ export const EMACS_KEYBIND: PageSetting = {
   event: "slime:emacs-keybind",
 };
 
+export const PAUSED: PageSetting = {
+  attribute: "data-slime-paused",
+  event: "slime:paused",
+};
+
 const ON = "on";
 const OFF = "off";
 
