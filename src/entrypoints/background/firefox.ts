@@ -1,5 +1,4 @@
 // Enable action icon only on Slite pages (Firefox version)
-import { EMACS_KEYBIND_STORAGE_KEY } from "../../settings/settings.ts";
 
 const SLITE_PATTERN = /^https:\/\/[^/]*\.slite\.com\//u;
 
@@ -41,6 +40,3 @@ void (async (): Promise<void> => {
     updateIcon(tab.id, tab.url);
   }
 })();
-
-// Initialize storage
-void browser.storage.local.set({ [EMACS_KEYBIND_STORAGE_KEY]: false });

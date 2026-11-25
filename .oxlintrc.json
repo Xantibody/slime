@@ -99,7 +99,10 @@
       "rules": {
         // An entry assembles feature/ and settings/. Everything else may only
         // import downward, which keeps feature/ from reaching back into them.
-        "import/no-relative-parent-imports": "off"
+        "import/no-relative-parent-imports": "off",
+        // An entry may need no import at all (Chrome's background only
+        // registers listeners); esbuild wraps each entry in an IIFE anyway.
+        "import/unambiguous": "off"
       }
     },
     {
