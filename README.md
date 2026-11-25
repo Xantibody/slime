@@ -84,6 +84,9 @@ Click the extension icon to toggle Emacs-style cursor movement:
 
 ## Files
 
+[docs/architecture.md](docs/architecture.md) explains the layout and the rules
+behind it.
+
 - `src/entrypoints/` - What the browser runs; each file only wires the parts below
   - `page.ts` - Page-context entry point, bundled as `inject.js`
   - `content.ts` - Content script that injects `inject.js` into the page context
@@ -94,8 +97,8 @@ Click the extension icon to toggle Emacs-style cursor movement:
   - `editor-marks.ts` - Composition tracking and mark parking
   - `mark-placeholder.ts` - Placeholder repair and the MutationObserver guard
   - `form-field.ts` - Keeps composing keys and Slite's stale writes away from a composing form field
-- `src/feature/extra/emacs-keybind.ts` - Emacs keybinding logic
-- `src/settings/` - Storage keys and messages, and the content script to page channel
+- `src/feature/extra/` - Emacs keybindings, and the Selection call that moves the caret
+- `src/settings/` - Stored settings and their defaults, and the content script to page channel
 - `build/` - esbuild bundling into dist/ and manifest generation for Chrome/Firefox
 - `e2e/` - Browser-driven verification (see [Development](#development))
 
