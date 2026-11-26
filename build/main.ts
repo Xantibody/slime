@@ -2,8 +2,8 @@
 import { execFileSync } from "node:child_process";
 import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { build } from "esbuild";
-import { generateChromeManifest, generateFirefoxManifest } from "../src/build/manifest.ts";
-import type { ChromeManifest, FirefoxManifest } from "../src/build/manifest.ts";
+import { generateChromeManifest, generateFirefoxManifest } from "./manifest.ts";
+import type { ChromeManifest, FirefoxManifest } from "./manifest.ts";
 
 // Release builds take the version from the tag (`VERSION` in the workflow);
 // local builds fall back to package.json so `pnpm build` needs no ceremony.
@@ -36,18 +36,18 @@ interface TargetConfig {
 const CONFIGS: Readonly<Record<Target, TargetConfig>> = {
   chrome: {
     manifest: generateChromeManifest(VERSION),
-    background: "src/background.chrome.ts",
+    background: "src/entrypoints/background/chrome.ts",
     packagePath: "dist/slime-chrome.zip",
   },
   firefox: {
     manifest: generateFirefoxManifest(VERSION),
-    background: "src/background.firefox.ts",
+    background: "src/entrypoints/background/firefox.ts",
     packagePath: "dist/slime-firefox.xpi",
   },
 };
 
 const STATIC_FILES: readonly (readonly [source: string, destination: string])[] = [
-  ["src/popup.html", "popup.html"],
+  ["src/entrypoints/popup/index.html", "popup.html"],
   ["icons/icon-16.png", "icons/icon-16.png"],
   ["icons/icon-48.png", "icons/icon-48.png"],
   ["icons/icon-128.png", "icons/icon-128.png"],
@@ -78,9 +78,9 @@ async function buildTarget(target: Target): Promise<void> {
 
   await bundle(
     {
-      inject: "src/inject.ts",
-      "content-script": "src/content-script.ts",
-      popup: "src/popup.ts",
+      inject: "src/entrypoints/page.ts",
+      "content-script": "src/entrypoints/content.ts",
+      popup: "src/entrypoints/popup/main.ts",
       background,
     },
     distDir,

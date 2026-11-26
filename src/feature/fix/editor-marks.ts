@@ -1,4 +1,5 @@
-// Slime - Core Logic
+// Document body fix: park Slate's marks while a composition runs, so the mark
+// placeholder never holds a copy of the composing text (docs/root-causes.md)
 
 /** The subset of the Slate editor instance this extension touches. */
 export interface SlateEditor {

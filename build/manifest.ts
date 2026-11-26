@@ -30,6 +30,7 @@ export interface BaseManifest {
 }
 
 export interface ChromeManifest extends BaseManifest {
+  readonly minimum_chrome_version: string;
   readonly permissions: readonly string[];
   readonly background: { readonly service_worker: string };
 }
@@ -110,6 +111,9 @@ export function generateChromeManifest(version: string): ChromeManifest {
     background: {
       service_worker: "background.js",
     },
+    // The first release that exposes `browser.*` (with promises) next to
+    // `chrome.*`, so every script shares one namespace with Firefox
+    minimum_chrome_version: "148",
     permissions: ["declarativeContent", "storage"],
   };
 }

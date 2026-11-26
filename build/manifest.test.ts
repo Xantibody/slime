@@ -87,6 +87,10 @@ describe(generateChromeManifest, () => {
     });
   });
 
+  it("should require Chrome 148, the first release with the browser namespace", () => {
+    expect(generateChromeManifest(VERSION).minimum_chrome_version).toBe("148");
+  });
+
   it("should not have browser_specific_settings", () => {
     const manifest: Record<string, unknown> = { ...generateChromeManifest(VERSION) };
 
