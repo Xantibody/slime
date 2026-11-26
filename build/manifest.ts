@@ -1,9 +1,13 @@
 // Manifest generation - pure functions (no I/O)
 import { SLITE_MATCH_PATTERN } from "../src/slite/url.ts";
 
+// 16 and 32 for the toolbar at 1x and 2x, 48 for the extensions page, 32 and
+// 64 for AMO's listing, 128 for the Chrome Web Store and the install dialog
 interface IconSet {
   readonly 16: string;
+  readonly 32: string;
   readonly 48: string;
+  readonly 64: string;
   readonly 128: string;
 }
 
@@ -52,7 +56,9 @@ export interface FirefoxManifest extends BaseManifest {
 const ICONS: IconSet = {
   128: "icons/icon-128.png",
   16: "icons/icon-16.png",
+  32: "icons/icon-32.png",
   48: "icons/icon-48.png",
+  64: "icons/icon-64.png",
 };
 
 /** Chrome stores each version component as a 16-bit integer. */

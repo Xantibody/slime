@@ -50,7 +50,9 @@ const CONFIGS: Readonly<Record<Target, TargetConfig>> = {
 const STATIC_FILES: readonly (readonly [source: string, destination: string])[] = [
   ["src/entrypoints/popup/index.html", "popup.html"],
   ["icons/icon-16.png", "icons/icon-16.png"],
+  ["icons/icon-32.png", "icons/icon-32.png"],
   ["icons/icon-48.png", "icons/icon-48.png"],
+  ["icons/icon-64.png", "icons/icon-64.png"],
   ["icons/icon-128.png", "icons/icon-128.png"],
 ];
 
