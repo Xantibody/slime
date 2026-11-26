@@ -11,6 +11,7 @@ export interface BaseManifest {
   readonly manifest_version: 3;
   readonly name: string;
   readonly version: string;
+  readonly default_locale: string;
   readonly description: string;
   readonly host_permissions: readonly string[];
   readonly icons: IconSet;
@@ -91,7 +92,10 @@ export function createBaseManifest(version: string): BaseManifest {
         run_at: "document_start",
       },
     ],
-    description: "Fixes Japanese IME double-display issue in Slite editor",
+    // The browser picks the text from _locales (build/locales.ts) by the UI
+    // language, falling back to English
+    default_locale: "en",
+    description: "__MSG_description__",
     host_permissions: [SLITE_MATCH_PATTERN],
     icons: ICONS,
     manifest_version: 3,

@@ -2,6 +2,7 @@
 import { execFileSync } from "node:child_process";
 import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { build } from "esbuild";
+import { LOCALES, localeMessages } from "./locales.ts";
 import { generateChromeManifest, generateFirefoxManifest } from "./manifest.ts";
 import type { ChromeManifest, FirefoxManifest } from "./manifest.ts";
 
@@ -87,6 +88,13 @@ async function buildTarget(target: Target): Promise<void> {
   );
 
   writeFileSync(`${distDir}/manifest.json`, `${JSON.stringify(manifest, null, 2)}\n`);
+  for (const locale of LOCALES) {
+    mkdirSync(`${distDir}/_locales/${locale}`, { recursive: true });
+    writeFileSync(
+      `${distDir}/_locales/${locale}/messages.json`,
+      `${JSON.stringify(localeMessages(locale), null, 2)}\n`,
+    );
+  }
   for (const [source, destination] of STATIC_FILES) {
     cpSync(source, `${distDir}/${destination}`);
   }

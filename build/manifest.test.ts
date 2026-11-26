@@ -50,6 +50,13 @@ describe(createBaseManifest, () => {
     expect(() => createBaseManifest("65536.1")).toThrow(/Invalid extension version/u);
   });
 
+  it("should take its description from the locale messages", () => {
+    const manifest = createBaseManifest(VERSION);
+
+    expect(manifest.default_locale).toBe("en");
+    expect(manifest.description).toBe("__MSG_description__");
+  });
+
   it("should have icons configuration", () => {
     expect(createBaseManifest(VERSION).icons).toStrictEqual({
       16: "icons/icon-16.png",

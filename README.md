@@ -100,7 +100,7 @@ behind it.
 - `src/feature/extra/` - Emacs keybindings, and the Selection call that moves the caret
 - `src/settings/` - Stored settings and their defaults, and the content script to page channel
 - `src/slite/` - Which URLs are Slite's, shared by the manifest and both backgrounds
-- `build/` - esbuild bundling into dist/ and manifest generation for Chrome/Firefox
+- `build/` - esbuild bundling into dist/, manifest generation for Chrome/Firefox, and the English and Japanese `_locales` messages
 - `e2e/` - Browser-driven verification (see [Development](#development))
 
 ## Development
