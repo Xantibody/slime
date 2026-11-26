@@ -1,6 +1,7 @@
 // Enable action icon only on Slite pages, and mark it while paused (Chrome
 // version)
 import { PAUSED_STORAGE_KEY, pausedBadgeText, pausedFrom } from "../../settings/settings.ts";
+import { SLITE_HOST_SUFFIX } from "../../slite/url.ts";
 
 async function showPause(): Promise<void> {
   const paused = pausedFrom(await browser.storage.local.get(PAUSED_STORAGE_KEY));
@@ -24,7 +25,7 @@ chrome.runtime.onInstalled.addListener(() => {
       {
         conditions: [
           new chrome.declarativeContent.PageStateMatcher({
-            pageUrl: { hostSuffix: ".slite.com" },
+            pageUrl: { hostSuffix: SLITE_HOST_SUFFIX },
           }),
         ],
         actions: [new chrome.declarativeContent.ShowAction()],

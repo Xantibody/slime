@@ -1,12 +1,7 @@
 // Enable action icon only on Slite pages, and mark it while paused (Firefox
 // version)
 import { PAUSED_STORAGE_KEY, pausedBadgeText, pausedFrom } from "../../settings/settings.ts";
-
-const SLITE_PATTERN = /^https:\/\/[^/]*\.slite\.com\//u;
-
-export function isSliteUrl(url: string | undefined): boolean {
-  return url !== undefined && SLITE_PATTERN.test(url);
-}
+import { isSliteUrl } from "../../slite/url.ts";
 
 function updateIcon(tabId: number | undefined, url: string | undefined): void {
   if (tabId === undefined) {

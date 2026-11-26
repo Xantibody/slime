@@ -99,6 +99,7 @@ behind it.
   - `form-field.ts` - Keeps composing keys and Slite's stale writes away from a composing form field
 - `src/feature/extra/` - Emacs keybindings, and the Selection call that moves the caret
 - `src/settings/` - Stored settings and their defaults, and the content script to page channel
+- `src/slite/` - Which URLs are Slite's, shared by the manifest and both backgrounds
 - `build/` - esbuild bundling into dist/ and manifest generation for Chrome/Firefox
 - `e2e/` - Browser-driven verification (see [Development](#development))
 

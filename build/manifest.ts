@@ -1,4 +1,5 @@
 // Manifest generation - pure functions (no I/O)
+import { SLITE_MATCH_PATTERN } from "../src/slite/url.ts";
 
 interface IconSet {
   readonly 16: string;
@@ -85,13 +86,13 @@ export function createBaseManifest(version: string): BaseManifest {
     },
     content_scripts: [
       {
-        matches: ["https://*.slite.com/*"],
+        matches: [SLITE_MATCH_PATTERN],
         js: ["content-script.js"],
         run_at: "document_start",
       },
     ],
     description: "Fixes Japanese IME double-display issue in Slite editor",
-    host_permissions: ["https://*.slite.com/*"],
+    host_permissions: [SLITE_MATCH_PATTERN],
     icons: ICONS,
     manifest_version: 3,
     name: "Slime",
@@ -99,7 +100,7 @@ export function createBaseManifest(version: string): BaseManifest {
     web_accessible_resources: [
       {
         resources: ["inject.js"],
-        matches: ["https://*.slite.com/*"],
+        matches: [SLITE_MATCH_PATTERN],
       },
     ],
   };
