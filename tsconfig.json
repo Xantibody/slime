@@ -37,5 +37,5 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src/**/*.ts", "build/**/*.ts", "e2e/**/*.ts", "vitest.config.ts"]
+  "include": ["src/**/*.ts", "build/**/*.ts", "e2e/**/*.ts", "store/**/*.ts", "vitest.config.ts"]
 }

@@ -18,6 +18,7 @@ src/
   slite/                facts about Slite itself, such as its URLs
 build/                  Node-side bundling and manifest generation
 e2e/                    browser-driven check against a saved Slite page
+store/                  store listing text and images, and their renderer
 ```
 
 ## Four kinds of place
@@ -35,7 +36,7 @@ e2e/                    browser-driven check against a saved Slite page
   which URLs are Slite's. The manifest and both backgrounds derive their
   checks from it, so the pattern is written once.
 
-`build/` never ships in the extension, so it sits outside `src/`.
+`build/` and `store/` never ship in the extension, so they sit outside `src/`.
 
 ## Import direction
 

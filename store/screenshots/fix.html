@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      .also {
+        margin: 0 0 10px;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--accent-deep);
+      }
+      .stack {
+        display: grid;
+        gap: 26px;
+      }
+      .doc {
+        padding: 26px 32px 30px;
+      }
+      .doc .tag {
+        margin-bottom: 16px;
+      }
+      .doc h2 {
+        margin: 0 0 12px;
+        font-size: 24px;
+        font-weight: 800;
+      }
+      .doc p {
+        margin: 0;
+        font-size: 21px;
+        line-height: 1.7;
+      }
+      .dup {
+        border-radius: 4px;
+        background: var(--danger-soft);
+        color: var(--danger);
+        text-decoration: underline wavy var(--danger);
+        text-underline-offset: 6px;
+      }
+      .caret {
+        display: inline-block;
+        width: 2px;
+        height: 1.15em;
+        margin-left: 2px;
+        background: var(--ink);
+        vertical-align: -0.2em;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shot">
+      <section>
+        <div class="brand"><img src="../../icons/icon.svg" alt="" />Slime for Slite</div>
+        <h1>日本語が<br />二重に入力される<br />問題を防ぎます</h1>
+        <p class="lead">
+          Slite
+          で漢字に変換して確定すると、同じ文字がもう一度表示され、そのまま保存されることがあります。Slime
+          を入れておけば、いつもどおり入力するだけです。
+        </p>
+        <p class="also">ほかにも、日本語入力で起きるこんな問題を直します</p>
+        <ul class="points">
+          <li>データベースの行タイトルで、変換中に Enter を押すと編集が終わる</li>
+          <li>検索ボックスで、変換中の文字が消える</li>
+        </ul>
+      </section>
+
+      <section class="stack">
+        <div class="window">
+          <div class="window-bar"><i></i><i></i><i></i></div>
+          <div class="doc">
+            <span class="tag bad">Slime なし</span>
+            <h2>週次ミーティング</h2>
+            <p>議事録を共有します<span class="dup">共有します</span><span class="caret"></span></p>
+          </div>
+        </div>
+        <div class="window">
+          <div class="window-bar"><i></i><i></i><i></i></div>
+          <div class="doc">
+            <span class="tag good">Slime あり</span>
+            <h2>週次ミーティング</h2>
+            <p>議事録を共有します<span class="caret"></span></p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

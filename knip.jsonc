@@ -12,7 +12,7 @@
     "src/entrypoints/background/firefox.ts",
     "e2e/verify.js",
   ],
-  "project": ["src/**/*.ts", "build/**/*.ts", "e2e/**/*.{ts,js}"],
+  "project": ["src/**/*.ts", "build/**/*.ts", "e2e/**/*.{ts,js}", "store/**/*.ts"],
 
   // Tools that flake.nix's toolchain provides; they never appear in package.json
   "ignoreBinaries": ["tsc", "oxlint", "treefmt", "vale", "typos", "agent-browser"],
