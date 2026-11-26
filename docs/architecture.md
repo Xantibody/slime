@@ -7,8 +7,8 @@ what it is allowed to call.
 ```
 src/
   entrypoints/          what the browser runs; wiring only
-    page.ts             Slite's page context, bundled as inject.js
-    content.ts          content script: injects inject.js, relays settings
+    page.ts             Slite's page context, bundled as page.js
+    content.ts          content script: injects page.js, relays settings
     popup/              the toolbar popup: version and the pause switch
     options/            the other settings, from the icon's right-click menu
     background/         chrome.ts (declarativeContent), firefox.ts (tabs)

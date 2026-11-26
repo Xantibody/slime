@@ -22,7 +22,7 @@ VERSION=<version being reviewed> pnpm run build:firefox
 `pnpm run build:firefox` runs `build/main.ts`, which calls esbuild and
 copies the static files. It produces:
 
-- `dist/firefox/inject.js` — bundled from `src/entrypoints/page.ts`
+- `dist/firefox/page.js` — bundled from `src/entrypoints/page.ts`
 - `dist/firefox/content-script.js` — bundled from `src/entrypoints/content.ts`
 - `dist/firefox/popup.js` — bundled from `src/entrypoints/popup/main.ts`
 - `dist/firefox/background.js` — bundled from `src/entrypoints/background/firefox.ts`

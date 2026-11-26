@@ -82,7 +82,7 @@ async function buildTarget(target: Target): Promise<void> {
 
   await bundle(
     {
-      inject: "src/entrypoints/page.ts",
+      page: "src/entrypoints/page.ts",
       "content-script": "src/entrypoints/content.ts",
       popup: "src/entrypoints/popup/main.ts",
       options: "src/entrypoints/options/main.ts",

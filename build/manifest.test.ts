@@ -81,10 +81,8 @@ describe(createBaseManifest, () => {
     expect(content_scripts[0]?.matches).toContain("https://*.slite.com/*");
   });
 
-  it("should expose inject.js as a web accessible resource", () => {
-    expect(createBaseManifest(VERSION).web_accessible_resources[0]?.resources).toContain(
-      "inject.js",
-    );
+  it("should expose page.js as a web accessible resource", () => {
+    expect(createBaseManifest(VERSION).web_accessible_resources[0]?.resources).toContain("page.js");
   });
 });
 

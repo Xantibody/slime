@@ -117,7 +117,7 @@ export function createBaseManifest(version: string): BaseManifest {
     version: assertVersion(version),
     web_accessible_resources: [
       {
-        resources: ["inject.js"],
+        resources: ["page.js"],
         matches: [SLITE_MATCH_PATTERN],
       },
     ],

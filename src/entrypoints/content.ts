@@ -1,4 +1,4 @@
-// Content script: injects inject.js into the page context and relays the
+// Content script: injects page.js into the page context and relays the
 // stored settings to it
 import { EMACS_KEYBIND, PAUSED, publish } from "../settings/page-channel.ts";
 import {
@@ -9,7 +9,7 @@ import {
 } from "../settings/settings.ts";
 
 const script = document.createElement("script");
-script.src = browser.runtime.getURL("inject.js");
+script.src = browser.runtime.getURL("page.js");
 script.addEventListener("load", () => {
   script.remove();
 });
