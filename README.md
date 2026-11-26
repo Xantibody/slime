@@ -69,9 +69,15 @@ This generates:
 
 The extension intercepts `compositionstart` and `compositionend` events to temporarily clear and restore editor marks, preventing the double-display issue caused by Slate.js editor's mark handling during IME composition.
 
+### Pause
+
+The popup's switch stops every fix and the keybindings at once, in every
+Slite tab; the toolbar icon shows OFF while Slime is paused. The popup also
+shows the installed version.
+
 ### Emacs Keybindings (Optional)
 
-Click the extension icon to toggle Emacs-style cursor movement:
+Off by default. Turn them on in the popup for Emacs-style cursor movement:
 
 | Shortcut | Action                    |
 | -------- | ------------------------- |
@@ -90,7 +96,7 @@ behind it.
 - `src/entrypoints/` - What the browser runs; each file only wires the parts below
   - `page.ts` - Page-context entry point, bundled as `inject.js`
   - `content.ts` - Content script that injects `inject.js` into the page context
-  - `popup/` - Toggle UI for Emacs keybindings
+  - `popup/` - Version, the pause switch and the Emacs keybindings switch
   - `background/chrome.ts` - Chrome background script (declarativeContent API)
   - `background/firefox.ts` - Firefox background script (tabs API)
 - `src/feature/fix/` - The fixes for each duplicate-text bug ([docs/root-causes.md](docs/root-causes.md))
@@ -102,6 +108,7 @@ behind it.
 - `src/slite/` - Which URLs are Slite's, shared by the manifest and both backgrounds
 - `build/` - esbuild bundling into dist/, manifest generation for Chrome/Firefox, and the English and Japanese `_locales` messages
 - `e2e/` - Browser-driven verification (see [Development](#development))
+- `store/` - Store listing text, screenshots and promo tiles, rendered by `pnpm store:render` ([store/README.md](store/README.md))
 
 ## Development
 
