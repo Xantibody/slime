@@ -27,8 +27,8 @@ Slite で日本語を入力すると、漢字に変換して確定した文字�
 ■ 一時停止
 ツールバーのアイコンからポップアップを開き、スイッチひとつで止められます。止めている間はアイコンに OFF と表示され、すべての Slite のタブにすぐ反映されます。
 
-■ おまけ: Emacs キーバインド
-Ctrl+F / B / N / P / A / E でカーソルを動かせます。初期設定は OFF で、ポップアップからオンにできます。Windows と Linux では、Ctrl+N はブラウザの新しいウィンドウに使われるため効きません。
+■ その他の設定: Emacs キーバインド
+Ctrl+F / B / N / P / A / E でカーソルを動かせます。初期設定は OFF で、ツールバーのアイコンを右クリックして開く「その他の設定」でオンにできます。Windows と Linux では、Ctrl+N はブラウザの新しいウィンドウに使われるため効きません。
 
 ■ プライバシー
 Slime は Slite のページの中で動くだけで、入力した内容を含め、どんなデータも外部に送りません。保存するのは、一時停止と Emacs キーバインドの ON/OFF だけで、それもブラウザの中に残ります。
@@ -50,8 +50,8 @@ What it fixes
 Pause
 Open the popup from the toolbar icon and switch Slime off with one click. While it is paused the icon shows OFF, and every Slite tab follows at once.
 
-Extra: Emacs keybindings
-Move the cursor with Ctrl+F / B / N / P / A / E. Off by default; turn it on in the popup. On Windows and Linux, Ctrl+N stays with the browser, which opens a new window.
+Other settings: Emacs keybindings
+Move the cursor with Ctrl+F / B / N / P / A / E. Off by default; turn it on in the other settings page, from the toolbar icon's right-click menu. On Windows and Linux, Ctrl+N stays with the browser, which opens a new window.
 
 Privacy
 Slime only runs inside Slite pages and sends nothing anywhere, including what you type. All it stores is whether it is paused and whether the Emacs keybindings are on, and that stays in your browser.
@@ -99,5 +99,7 @@ https://github.com/Xantibody/slime
 - `tabs` (the reason AMO's reviewers may ask about): reads the URL of a tab
   to enable the toolbar icon only on Slite pages; Firefox has no
   `declarativeContent`.
+- `menus`: adds その他の設定 to the toolbar button's right-click menu, which
+  opens the options page; Firefox lists no Options item there by itself.
 - The add-on declares `data_collection_permissions: none` in its manifest, so
   no privacy policy is needed.
