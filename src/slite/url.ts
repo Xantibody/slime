@@ -5,11 +5,17 @@ export const SLITE_HOST_SUFFIX = ".slite.com";
 
 export const SLITE_MATCH_PATTERN = `https://*${SLITE_HOST_SUFFIX}/*`;
 
+// AIDEV-NOTE: try/catch, not URL.canParse: the Firefox manifest still
+// accepts 109, and canParse arrived in Firefox 115
 export function isSliteUrl(url: string | undefined): boolean {
-  if (url === undefined || !URL.canParse(url)) {
+  if (url === undefined) {
     return false;
   }
 
-  const { protocol, hostname } = new URL(url);
-  return protocol === "https:" && hostname.endsWith(SLITE_HOST_SUFFIX);
+  try {
+    const { protocol, hostname } = new URL(url);
+    return protocol === "https:" && hostname.endsWith(SLITE_HOST_SUFFIX);
+  } catch {
+    return false;
+  }
 }
