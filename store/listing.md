@@ -75,7 +75,10 @@ https://github.com/Xantibody/slime
 ## Chrome Web Store: other fields
 
 - Category: Productivity / Tools
-- Language: Japanese
+- Languages: the package ships `_locales` for English (the default) and
+  Japanese, so the dashboard keeps one listing per language. Paste the en
+  block into English and the ja block into Japanese. The split appears only
+  once a localized package (2.0.0 or later) has been uploaded.
 - Homepage and support URL: `https://github.com/Xantibody/slime` and
   `https://github.com/Xantibody/slime/issues`
 
