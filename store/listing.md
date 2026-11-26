@@ -17,18 +17,18 @@ Shown under the name in search results. 132 characters at most.
 ### ja
 
 ```text
-Slite で日本語を入力すると、漢字に変換して確定した文字がもう一度表示され、そのまま保存されてしまうことがあります。Slime はこの問題を防ぐ拡張機能です。入れておけば、いつもどおり入力するだけで、二重になった文字を消して回る必要がなくなります。
+Slite で日本語を入力すると、漢字に変換して確定した文字がもう一度表示されたり、二重のまま保存されたりすることがあります。Slime はこの問題を防ぐ拡張機能です。入れておけば、いつもどおり入力するだけで、二重になった文字を消して回る必要がなくなります。
 
 ■ 直す問題
-・ドキュメントの本文で、確定した文字が二重に表示・保存される
-・データベースの行タイトルで、変換中に Enter を押すと編集が終わってしまう
-・検索ボックスで、変換中の文字が消える
+・ドキュメントの本文で、確定した文字が二重に表示される
+・データベースの行タイトルで、変換を確定する Enter で編集が終わり、タイトルが二重のまま保存される
+・検索ページで、1 文字ごとに変換が切れ、ローマ字とかなが混ざって漢字に変換できない
 
 ■ 一時停止
 ツールバーのアイコンからポップアップを開き、スイッチひとつで止められます。止めている間はアイコンに OFF と表示され、すべての Slite のタブにすぐ反映されます。
 
 ■ おまけ: Emacs キーバインド
-Ctrl+F / B / N / P / A / E でカーソルを動かせます。初期設定は OFF で、ポップアップからオンにできます。
+Ctrl+F / B / N / P / A / E でカーソルを動かせます。初期設定は OFF で、ポップアップからオンにできます。Windows と Linux では、Ctrl+N はブラウザの新しいウィンドウに使われるため効きません。
 
 ■ プライバシー
 Slime は Slite のページの中で動くだけで、入力した内容を含め、どんなデータも外部に送りません。保存するのは、一時停止と Emacs キーバインドの ON/OFF だけで、それもブラウザの中に残ります。
@@ -40,18 +40,18 @@ https://github.com/Xantibody/slime
 ### en
 
 ```text
-When you type Japanese in Slite, the text you have just converted to kanji and confirmed can appear a second time and be saved that way. Slime stops that from happening: keep it installed, type as usual, and there is nothing to clean up afterwards.
+When you type Japanese in Slite, the text you have just converted to kanji and confirmed can appear a second time, or be saved twice. Slime stops that from happening: keep it installed, type as usual, and there is nothing to clean up afterwards.
 
 What it fixes
-- In a document, confirmed text showing up and being saved twice
-- In a database row title, pressing Enter during a conversion ending the edit
-- In the search box, the text being converted disappearing
+- In a document, confirmed text showing up twice
+- In a database row title, the Enter that confirms a conversion ending the edit and saving the title twice
+- On the search page, the conversion breaking after every letter, leaving romaji mixed with kana and no way to reach kanji
 
 Pause
 Open the popup from the toolbar icon and switch Slime off with one click. While it is paused the icon shows OFF, and every Slite tab follows at once.
 
 Extra: Emacs keybindings
-Move the cursor with Ctrl+F / B / N / P / A / E. Off by default; turn it on in the popup.
+Move the cursor with Ctrl+F / B / N / P / A / E. Off by default; turn it on in the popup. On Windows and Linux, Ctrl+N stays with the browser, which opens a new window.
 
 Privacy
 Slime only runs inside Slite pages and sends nothing anywhere, including what you type. All it stores is whether it is paused and whether the Emacs keybindings are on, and that stays in your browser.

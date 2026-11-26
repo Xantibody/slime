@@ -88,6 +88,9 @@ Off by default. Turn them on in the popup for Emacs-style cursor movement:
 | Ctrl+A   | Move to beginning of line |
 | Ctrl+E   | Move to end of line       |
 
+On Windows and Linux the browser keeps Ctrl+N for a new window and never
+passes it to the page, so it does not move the cursor there.
+
 ## Files
 
 [docs/architecture.md](docs/architecture.md) explains the layout and the rules
