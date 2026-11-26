@@ -17,8 +17,8 @@
     let
       # NOTE: url and hash are auto-updated by .github/workflows/update-flake-amo.yml
       # (empty until the first release is published on AMO)
-      amoUrl = "https://addons.mozilla.org/firefox/downloads/file/5299111/slime_ime-1.2.1.xpi";
-      amoHash = "sha256-SbYmKMrZgu//KHNw2fIfQe6PUdLnUMYal75xyHyFVUU=";
+      amoUrl = "https://addons.mozilla.org/firefox/downloads/file/5309300/slime_ime-2.0.0.xpi";
+      amoHash = "sha256-xo9xCdJx7s4bmGtm0hUoQTCD9r/v5ws/MAOiIlHeVqQ=";
     in
     flake-utils.lib.eachDefaultSystem (
       system:
