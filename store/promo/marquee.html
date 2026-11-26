@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      /* Same motif as small.html, laid out wide: no text, as the store asks */
+      .tile {
+        position: relative;
+        display: flex;
+        gap: 90px;
+        align-items: center;
+        justify-content: center;
+        width: 1400px;
+        height: 560px;
+        background:
+          radial-gradient(circle at 12% 18%, #4cc28f 0, transparent 45%),
+          radial-gradient(circle at 92% 90%, #17603f 0, transparent 50%),
+          linear-gradient(150deg, #2f9e6f 0%, #1f7a53 100%);
+      }
+      .icon {
+        width: 300px;
+        height: 300px;
+        filter: drop-shadow(0 22px 40px rgb(0 0 0 / 28%));
+      }
+      .editor {
+        display: grid;
+        gap: 22px;
+        width: 520px;
+        padding: 44px 48px;
+        border-radius: 26px;
+        background: rgb(255 255 255 / 16%);
+      }
+      .line {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .line i {
+        display: block;
+        height: 22px;
+        border-radius: 11px;
+        background: rgb(255 255 255 / 55%);
+      }
+      .line .caret {
+        width: 7px;
+        height: 44px;
+        border-radius: 4px;
+        background: #ffffff;
+      }
+      .candidates {
+        display: grid;
+        gap: 12px;
+        width: 220px;
+        margin-left: 120px;
+        padding: 18px;
+        border-radius: 16px;
+        background: #ffffff;
+        box-shadow: 0 16px 30px rgb(0 0 0 / 18%);
+      }
+      .candidates i {
+        display: block;
+        height: 16px;
+        border-radius: 8px;
+        background: #cfe9dc;
+      }
+      .candidates i:first-child {
+        background: #2f9e6f;
+      }
+      .candidates i:nth-child(2) {
+        width: 80%;
+      }
+      .candidates i:nth-child(3) {
+        width: 62%;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="tile">
+      <img class="icon" src="../../icons/icon.svg" alt="" />
+      <div class="editor">
+        <div class="line"><i style="width: 70%"></i></div>
+        <div class="line"><i style="width: 44%"></i><span class="caret"></span></div>
+        <div class="candidates"><i></i><i></i><i></i></div>
+        <div class="line"><i style="width: 58%"></i></div>
+      </div>
+    </main>
+  </body>
+</html>

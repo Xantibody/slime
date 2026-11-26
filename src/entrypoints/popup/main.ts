@@ -1,20 +1,36 @@
-import { EMACS_KEYBIND_STORAGE_KEY, emacsKeybindFrom } from "../../settings/settings.ts";
+// The popup: what Slime is, its version, and the one switch everyone needs.
+// Settings few users want live on the options page instead.
+import { PAUSED_STORAGE_KEY, pausedFrom } from "../../settings/settings.ts";
 
-const toggle = document.querySelector("#emacsToggle");
-if (!(toggle instanceof HTMLInputElement)) {
-  throw new TypeError("#emacsToggle checkbox is missing from popup.html");
+const enabledToggle = document.querySelector("#enabledToggle");
+if (!(enabledToggle instanceof HTMLInputElement)) {
+  throw new TypeError("#enabledToggle checkbox is missing from popup.html");
 }
-const emacsToggle = toggle;
+const status = document.querySelector("#status");
+const version = document.querySelector("#version");
 
-async function loadState(): Promise<void> {
-  emacsToggle.checked = emacsKeybindFrom(
-    await browser.storage.local.get(EMACS_KEYBIND_STORAGE_KEY),
-  );
+// The manifest is the one place the version is set, by the release tag
+if (version !== null) {
+  version.textContent = `v${browser.runtime.getManifest().version}`;
 }
 
-void loadState();
+function showPaused(toggle: HTMLInputElement, paused: boolean): void {
+  toggle.checked = !paused;
+  document.body.classList.toggle("paused", paused);
+  if (status !== null) {
+    status.textContent = paused ? "一時停止中" : "動作中";
+  }
+}
+
+async function loadState(toggle: HTMLInputElement): Promise<void> {
+  showPaused(toggle, pausedFrom(await browser.storage.local.get(PAUSED_STORAGE_KEY)));
+}
+
+void loadState(enabledToggle);
 
 // Writing storage is enough: every Slite tab's content script follows it
-emacsToggle.addEventListener("change", () => {
-  void browser.storage.local.set({ [EMACS_KEYBIND_STORAGE_KEY]: emacsToggle.checked });
+enabledToggle.addEventListener("change", () => {
+  const paused = !enabledToggle.checked;
+  showPaused(enabledToggle, paused);
+  void browser.storage.local.set({ [PAUSED_STORAGE_KEY]: paused });
 });

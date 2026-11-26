@@ -1,10 +1,7 @@
-// Enable action icon only on Slite pages (Firefox version)
-
-const SLITE_PATTERN = /^https:\/\/[^/]*\.slite\.com\//u;
-
-export function isSliteUrl(url: string | undefined): boolean {
-  return url !== undefined && SLITE_PATTERN.test(url);
-}
+// Enable action icon only on Slite pages, and mark it while paused (Firefox
+// version)
+import { PAUSED_STORAGE_KEY, pausedBadgeText, pausedFrom } from "../../settings/settings.ts";
+import { isSliteUrl } from "../../slite/url.ts";
 
 function updateIcon(tabId: number | undefined, url: string | undefined): void {
   if (tabId === undefined) {
@@ -40,3 +37,30 @@ void (async (): Promise<void> => {
     updateIcon(tab.id, tab.url);
   }
 })();
+
+// Mark the icon while paused, on every start of the event page and on change
+async function showPause(): Promise<void> {
+  const paused = pausedFrom(await browser.storage.local.get(PAUSED_STORAGE_KEY));
+  await browser.action.setBadgeText({ text: pausedBadgeText(paused) });
+}
+
+void showPause();
+browser.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName === "local" && Object.hasOwn(changes, PAUSED_STORAGE_KEY)) {
+    void showPause();
+  }
+});
+
+// Firefox's toolbar button has no Options item of its own (Chrome adds one
+// from options_ui), so the other settings get one here. Menu items persist
+// across event page restarts, hence onInstalled rather than every start
+const OPTIONS_MENU_ID = "options";
+
+browser.runtime.onInstalled.addListener(() => {
+  browser.menus.create({ id: OPTIONS_MENU_ID, title: "その他の設定", contexts: ["action"] });
+});
+browser.menus.onClicked.addListener((info) => {
+  if (info.menuItemId === OPTIONS_MENU_ID) {
+    void browser.runtime.openOptionsPage();
+  }
+});

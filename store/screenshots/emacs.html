@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      .keys {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        padding: 32px 28px;
+      }
+      .key {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fbfcfd;
+      }
+      .label {
+        font-size: 18px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .key kbd {
+        min-width: 46px;
+        height: 46px;
+        padding: 0 10px;
+        border-radius: 10px;
+        font-size: 18px;
+      }
+      .plus {
+        color: var(--muted);
+        font-size: 18px;
+      }
+      .combo {
+        display: flex;
+        flex: none;
+        gap: 6px;
+        align-items: center;
+      }
+      .combo kbd:first-child {
+        min-width: 62px;
+        font-size: 15px;
+      }
+      .note {
+        margin: 0;
+        padding: 0 28px 28px;
+        color: var(--muted);
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shot">
+      <section>
+        <div class="brand"><img src="../../icons/icon.svg" alt="" />Slime for Slite</div>
+        <h1>Emacs<br />キーバインドも</h1>
+        <p class="lead">
+          Ctrl とアルファベットで、手をホームポジションから動かさずにカーソルを動かせます。
+        </p>
+        <ul class="points">
+          <li>初期設定は OFF。「その他の設定」でオンに</li>
+          <li>「その他の設定」は、アイコンの右クリックから</li>
+          <li>効くのは Slite のタブの中だけ</li>
+        </ul>
+      </section>
+
+      <section class="window">
+        <div class="window-bar"><i></i><i></i><i></i></div>
+        <div class="keys">
+          <div class="key">
+            <div class="combo"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>F</kbd></div>
+            <span class="label">右へ</span>
+          </div>
+          <div class="key">
+            <div class="combo"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>B</kbd></div>
+            <span class="label">左へ</span>
+          </div>
+          <div class="key">
+            <div class="combo"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>N</kbd></div>
+            <span class="label">次の行へ</span>
+          </div>
+          <div class="key">
+            <div class="combo"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>P</kbd></div>
+            <span class="label">前の行へ</span>
+          </div>
+          <div class="key">
+            <div class="combo"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>A</kbd></div>
+            <span class="label">行の先頭へ</span>
+          </div>
+          <div class="key">
+            <div class="combo"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>E</kbd></div>
+            <span class="label">行の末尾へ</span>
+          </div>
+        </div>
+        <p class="note">
+          Windows と Linux では、Ctrl+N はブラウザの新しいウィンドウに使われるため効きません。
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

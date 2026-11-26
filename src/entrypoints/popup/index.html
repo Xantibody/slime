@@ -1,81 +1,179 @@
 <!doctype html>
-<html>
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <style>
+      :root {
+        --bg: #ffffff;
+        --fg: #1f2328;
+        --muted: #656d76;
+        --line: #d8dee4;
+        --track: #c4cbd3;
+        --accent: #2f9e6f;
+        --paused: #b35900;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #1c2128;
+          --fg: #e6edf3;
+          --muted: #9198a1;
+          --line: #373e47;
+          --track: #545d68;
+          --accent: #3fb27f;
+          --paused: #f0883e;
+          color-scheme: dark;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
       body {
-        width: 200px;
-        padding: 12px;
-        font-family: system-ui, sans-serif;
-        font-size: 14px;
+        width: 300px;
+        margin: 0;
+        padding: 14px 16px 12px;
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          13px/1.5 system-ui,
+          -apple-system,
+          "Hiragino Sans",
+          "Yu Gothic UI",
+          sans-serif;
       }
-      h1 {
-        font-size: 14px;
-        margin: 0 0 12px 0;
-        color: #333;
-      }
-      .toggle-row {
+      header {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        padding: 8px 0;
-        border-bottom: 1px solid #eee;
+        gap: 10px;
       }
-      .toggle-row:last-child {
-        border-bottom: none;
+      header img {
+        width: 32px;
+        height: 32px;
+        border-radius: 7px;
       }
-      .toggle-label {
-        color: #333;
+      header h1 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 650;
       }
-      .toggle {
+      #version {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 12px;
+        font-variant-numeric: tabular-nums;
+      }
+      .description {
+        margin: 8px 0 12px;
+        color: var(--muted);
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 0;
+        border-top: 1px solid var(--line);
+      }
+      .row .label {
+        display: flex;
+        flex-direction: column;
+      }
+      #status {
+        color: var(--accent);
+        font-size: 12px;
+      }
+      body.paused #status {
+        color: var(--paused);
+      }
+      .switch {
         position: relative;
-        width: 40px;
+        flex: none;
+        width: 36px;
         height: 20px;
       }
-      .toggle input {
+      .switch input {
+        position: absolute;
+        inset: 0;
+        margin: 0;
         opacity: 0;
-        width: 0;
-        height: 0;
-      }
-      .slider {
-        position: absolute;
         cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        border-radius: 20px;
-        transition: 0.2s;
       }
-      .slider:before {
+      .switch span {
         position: absolute;
-        content: "";
-        height: 16px;
-        width: 16px;
+        inset: 0;
+        border-radius: 999px;
+        background: var(--track);
+        transition: background 0.15s;
+        pointer-events: none;
+      }
+      .switch span::before {
+        position: absolute;
+        top: 2px;
         left: 2px;
-        bottom: 2px;
-        background-color: white;
+        width: 16px;
+        height: 16px;
         border-radius: 50%;
-        transition: 0.2s;
+        background: #ffffff;
+        content: "";
+        transition: transform 0.15s;
       }
-      input:checked + .slider {
-        background-color: #4a90d9;
+      .switch input:checked + span {
+        background: var(--accent);
       }
-      input:checked + .slider:before {
-        transform: translateX(20px);
+      .switch input:checked + span::before {
+        transform: translateX(16px);
+      }
+      .switch input:focus-visible + span {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      footer {
+        display: flex;
+        gap: 14px;
+        padding-top: 10px;
+        border-top: 1px solid var(--line);
+        font-size: 12px;
+      }
+      footer a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      footer a:hover {
+        color: var(--fg);
+        text-decoration: underline;
       }
     </style>
   </head>
   <body>
-    <h1>Slime</h1>
-    <div class="toggle-row">
-      <span class="toggle-label">Emacs Keybind</span>
-      <label class="toggle">
-        <input type="checkbox" id="emacsToggle" />
-        <span class="slider"></span>
+    <header>
+      <img src="icons/icon-48.png" alt="" />
+      <h1>Slime</h1>
+      <span id="version"></span>
+    </header>
+    <p class="description">
+      Slite で日本語を入力したときに、文字が二重に表示・保存されるのを防ぎます。
+    </p>
+
+    <div class="row">
+      <label class="label" for="enabledToggle">
+        <span>Slime を有効にする</span>
+        <span id="status"></span>
       </label>
+      <span class="switch">
+        <input type="checkbox" id="enabledToggle" />
+        <span></span>
+      </span>
     </div>
+
+    <footer>
+      <a href="https://github.com/Xantibody/slime" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/Xantibody/slime/issues/new" target="_blank" rel="noopener"
+        >不具合を報告</a
+      >
+      <a href="https://github.com/Xantibody/slime/releases" target="_blank" rel="noopener"
+        >更新履歴</a
+      >
+    </footer>
     <script src="popup.js"></script>
   </body>
 </html>

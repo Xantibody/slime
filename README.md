@@ -69,9 +69,15 @@ This generates:
 
 The extension intercepts `compositionstart` and `compositionend` events to temporarily clear and restore editor marks, preventing the double-display issue caused by Slate.js editor's mark handling during IME composition.
 
+### Pause
+
+The popup's switch stops every fix and the keybindings at once, in every
+Slite tab; the toolbar icon shows OFF while Slime is paused. The popup also
+shows the installed version.
+
 ### Emacs Keybindings (Optional)
 
-Click the extension icon to toggle Emacs-style cursor movement:
+Off by default. Turn them on in the other settings page for Emacs-style cursor movement: right-click the toolbar icon and choose Options (Chrome, Edge) or その他の設定 (Firefox).
 
 | Shortcut | Action                    |
 | -------- | ------------------------- |
@@ -82,6 +88,9 @@ Click the extension icon to toggle Emacs-style cursor movement:
 | Ctrl+A   | Move to beginning of line |
 | Ctrl+E   | Move to end of line       |
 
+On Windows and Linux the browser keeps Ctrl+N for a new window and never
+passes it to the page, so it does not move the cursor there.
+
 ## Files
 
 [docs/architecture.md](docs/architecture.md) explains the layout and the rules
@@ -90,7 +99,8 @@ behind it.
 - `src/entrypoints/` - What the browser runs; each file only wires the parts below
   - `page.ts` - Page-context entry point, bundled as `inject.js`
   - `content.ts` - Content script that injects `inject.js` into the page context
-  - `popup/` - Toggle UI for Emacs keybindings
+  - `popup/` - Version and the pause switch
+  - `options/` - The other settings page (Emacs keybindings), opened from the toolbar icon's right-click menu
   - `background/chrome.ts` - Chrome background script (declarativeContent API)
   - `background/firefox.ts` - Firefox background script (tabs API)
 - `src/feature/fix/` - The fixes for each duplicate-text bug ([docs/root-causes.md](docs/root-causes.md))
@@ -99,8 +109,10 @@ behind it.
   - `form-field.ts` - Keeps composing keys and Slite's stale writes away from a composing form field
 - `src/feature/extra/` - Emacs keybindings, and the Selection call that moves the caret
 - `src/settings/` - Stored settings and their defaults, and the content script to page channel
-- `build/` - esbuild bundling into dist/ and manifest generation for Chrome/Firefox
+- `src/slite/` - Which URLs are Slite's, shared by the manifest and both backgrounds
+- `build/` - esbuild bundling into dist/, manifest generation for Chrome/Firefox, and the English and Japanese `_locales` messages
 - `e2e/` - Browser-driven verification (see [Development](#development))
+- `store/` - Store listing text, screenshots and promo tiles, rendered by `pnpm store:render` ([store/README.md](store/README.md))
 
 ## Development
 

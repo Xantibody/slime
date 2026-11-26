@@ -1,8 +1,13 @@
 // Manifest generation - pure functions (no I/O)
+import { SLITE_MATCH_PATTERN } from "../src/slite/url.ts";
 
+// 16 and 32 for the toolbar at 1x and 2x, 48 for the extensions page, 32 and
+// 64 for AMO's listing, 128 for the Chrome Web Store and the install dialog
 interface IconSet {
   readonly 16: string;
+  readonly 32: string;
   readonly 48: string;
+  readonly 64: string;
   readonly 128: string;
 }
 
@@ -10,6 +15,7 @@ export interface BaseManifest {
   readonly manifest_version: 3;
   readonly name: string;
   readonly version: string;
+  readonly default_locale: string;
   readonly description: string;
   readonly host_permissions: readonly string[];
   readonly icons: IconSet;
@@ -18,6 +24,7 @@ export interface BaseManifest {
     readonly default_popup: string;
     readonly default_icon: IconSet;
   };
+  readonly options_ui: { readonly page: string; readonly open_in_tab: boolean };
   readonly content_scripts: readonly {
     readonly matches: readonly string[];
     readonly js: readonly string[];
@@ -50,7 +57,9 @@ export interface FirefoxManifest extends BaseManifest {
 const ICONS: IconSet = {
   128: "icons/icon-128.png",
   16: "icons/icon-16.png",
+  32: "icons/icon-32.png",
   48: "icons/icon-48.png",
+  64: "icons/icon-64.png",
 };
 
 /** Chrome stores each version component as a 16-bit integer. */
@@ -83,15 +92,25 @@ export function createBaseManifest(version: string): BaseManifest {
       default_popup: "popup.html",
       default_title: "Slime",
     },
+    // Settings most users never need stay out of the popup. Chrome lists this
+    // page as Options in the toolbar icon's right-click menu; Firefox gets its
+    // own menu item from the background
+    options_ui: {
+      page: "options.html",
+      open_in_tab: true,
+    },
     content_scripts: [
       {
-        matches: ["https://*.slite.com/*"],
+        matches: [SLITE_MATCH_PATTERN],
         js: ["content-script.js"],
         run_at: "document_start",
       },
     ],
-    description: "Fixes Japanese IME double-display issue in Slite editor",
-    host_permissions: ["https://*.slite.com/*"],
+    // The browser picks the text from _locales (build/locales.ts) by the UI
+    // language, falling back to English
+    default_locale: "en",
+    description: "__MSG_description__",
+    host_permissions: [SLITE_MATCH_PATTERN],
     icons: ICONS,
     manifest_version: 3,
     name: "Slime",
@@ -99,7 +118,7 @@ export function createBaseManifest(version: string): BaseManifest {
     web_accessible_resources: [
       {
         resources: ["inject.js"],
-        matches: ["https://*.slite.com/*"],
+        matches: [SLITE_MATCH_PATTERN],
       },
     ],
   };
@@ -136,6 +155,8 @@ export function generateFirefoxManifest(version: string): FirefoxManifest {
         data_collection_permissions: { required: ["none"] },
       },
     },
-    permissions: ["tabs", "storage"],
+    // menus: Firefox's toolbar button has no Options item, so the background
+    // adds one that opens options.html
+    permissions: ["tabs", "storage", "menus"],
   };
 }

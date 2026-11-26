@@ -229,6 +229,16 @@ describe(createFormFieldGuard, () => {
       expect(input.value).toBe("高度");
     });
 
+    it("should hand a field still composing back to the page when stopped", () => {
+      const input = renderSearchInput();
+      startComposition(input);
+      guard.stop();
+
+      input.value = "高度";
+
+      expect(input.value).toBe("高度");
+    });
+
     it("should guard a textarea the same way", () => {
       renderSearchInput();
       const textarea = document.createElement("textarea");

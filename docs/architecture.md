@@ -9,17 +9,20 @@ src/
   entrypoints/          what the browser runs; wiring only
     page.ts             Slite's page context, bundled as inject.js
     content.ts          content script: injects inject.js, relays settings
-    popup/              the toolbar popup
+    popup/              the toolbar popup: version and the pause switch
+    options/            the other settings, from the icon's right-click menu
     background/         chrome.ts (declarativeContent), firefox.ts (tabs)
   feature/              what Slime does
     fix/                the IME fixes, one per cause in root-causes.md
     extra/              opt-in additions, such as the Emacs keybindings
   settings/             what the popup, content script and page share
+  slite/                facts about Slite itself, such as its URLs
 build/                  Node-side bundling and manifest generation
 e2e/                    browser-driven check against a saved Slite page
+store/                  store listing text and images, and their renderer
 ```
 
-## Three kinds of place
+## Four kinds of place
 
 - **`entrypoints/`** says where code runs. An entry creates the parts it needs
   and connects them; it holds no rule of its own. A new screen or script is a
@@ -30,8 +33,11 @@ e2e/                    browser-driven check against a saved Slite page
   place: both kinds can be switched off.
 - **`settings/`** holds the values the user chooses, their defaults, and how
   they reach the page.
+- **`slite/`** holds what is true of Slite whether or not Slime runs, such as
+  which URLs are Slite's. The manifest and both backgrounds derive their
+  checks from it, so the pattern is written once.
 
-`build/` never ships in the extension, so it sits outside `src/`.
+`build/` and `store/` never ship in the extension, so they sit outside `src/`.
 
 ## Import direction
 

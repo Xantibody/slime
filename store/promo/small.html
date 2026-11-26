@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      /* The store asks for no text on promo tiles: the icon and the shape of
+         an IME candidate list carry it */
+      .tile {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 440px;
+        height: 280px;
+        background:
+          radial-gradient(circle at 20% 20%, #4cc28f 0, transparent 55%),
+          linear-gradient(150deg, #2f9e6f 0%, #1f7a53 100%);
+      }
+      .icon {
+        position: relative;
+        z-index: 1;
+        width: 150px;
+        height: 150px;
+        filter: drop-shadow(0 12px 22px rgb(0 0 0 / 28%));
+      }
+      .candidates {
+        position: absolute;
+        right: 34px;
+        bottom: 34px;
+        display: grid;
+        gap: 7px;
+        width: 92px;
+        padding: 10px;
+        border-radius: 10px;
+        background: rgb(255 255 255 / 18%);
+      }
+      .candidates i {
+        display: block;
+        height: 10px;
+        border-radius: 5px;
+        background: rgb(255 255 255 / 55%);
+      }
+      .candidates i:first-child {
+        background: #ffffff;
+      }
+      .candidates i:nth-child(2) {
+        width: 78%;
+      }
+      .candidates i:nth-child(3) {
+        width: 64%;
+      }
+      .caret {
+        position: absolute;
+        top: 46px;
+        left: 52px;
+        width: 6px;
+        height: 54px;
+        border-radius: 3px;
+        background: rgb(255 255 255 / 45%);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="tile">
+      <span class="caret"></span>
+      <img class="icon" src="../../icons/icon.svg" alt="" />
+      <div class="candidates"><i></i><i></i><i></i></div>
+    </main>
+  </body>
+</html>

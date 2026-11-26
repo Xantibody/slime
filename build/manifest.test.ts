@@ -50,10 +50,26 @@ describe(createBaseManifest, () => {
     expect(() => createBaseManifest("65536.1")).toThrow(/Invalid extension version/u);
   });
 
+  it("should take its description from the locale messages", () => {
+    const manifest = createBaseManifest(VERSION);
+
+    expect(manifest.default_locale).toBe("en");
+    expect(manifest.description).toBe("__MSG_description__");
+  });
+
+  it("should open the other settings in a tab of their own", () => {
+    expect(createBaseManifest(VERSION).options_ui).toStrictEqual({
+      page: "options.html",
+      open_in_tab: true,
+    });
+  });
+
   it("should have icons configuration", () => {
     expect(createBaseManifest(VERSION).icons).toStrictEqual({
       16: "icons/icon-16.png",
+      32: "icons/icon-32.png",
       48: "icons/icon-48.png",
+      64: "icons/icon-64.png",
       128: "icons/icon-128.png",
     });
   });
@@ -114,6 +130,10 @@ describe(generateFirefoxManifest, () => {
 
   it("should include storage permission", () => {
     expect(generateFirefoxManifest(VERSION).permissions).toContain("storage");
+  });
+
+  it("should include menus permission for the toolbar button's settings item", () => {
+    expect(generateFirefoxManifest(VERSION).permissions).toContain("menus");
   });
 
   it("should use scripts array for background", () => {

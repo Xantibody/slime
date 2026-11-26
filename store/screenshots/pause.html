@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+      .browser {
+        position: relative;
+        height: 600px;
+      }
+      .toolbar {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        height: 60px;
+        padding: 0 18px;
+      }
+      .address {
+        flex: 1;
+        height: 36px;
+        padding: 0 16px;
+        border-radius: 18px;
+        background: #eef1f4;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 36px;
+      }
+      .action {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--accent-soft);
+      }
+      .action img {
+        width: 24px;
+        height: 24px;
+      }
+      .badge {
+        position: absolute;
+        right: -6px;
+        bottom: -4px;
+        padding: 1px 5px;
+        border-radius: 4px;
+        background: #5f6368;
+        color: #ffffff;
+        font-family: system-ui, sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .popup {
+        position: absolute;
+        top: 66px;
+        right: 8px;
+        overflow: hidden;
+        width: 300px;
+        height: 200px;
+        border-radius: 10px;
+        box-shadow:
+          0 0 0 1px rgb(0 0 0 / 8%),
+          0 24px 48px rgb(0 0 0 / 18%);
+        transform: scale(1.62);
+        transform-origin: top right;
+      }
+      .popup iframe {
+        width: 300px;
+        height: 200px;
+        border: 0;
+      }
+      .page {
+        padding: 28px 30px;
+        color: #c3cad1;
+      }
+      .page b {
+        display: block;
+        width: 52%;
+        height: 18px;
+        margin-bottom: 16px;
+        border-radius: 9px;
+        background: #e6eaee;
+      }
+      .page b:nth-child(2) {
+        width: 38%;
+      }
+      .page b:nth-child(3) {
+        width: 46%;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shot">
+      <section>
+        <div class="brand"><img src="../../icons/icon.svg" alt="" />Slime for Slite</div>
+        <h1>止めたいときは<br />ワンクリックで</h1>
+        <p class="lead">
+          ツールバーのアイコンから開いて、スイッチひとつで一時停止できます。止めている間は、アイコンに
+          OFF と表示されます。
+        </p>
+        <ul class="points">
+          <li>すべての Slite のタブに、すぐに反映</li>
+          <li>入れているバージョンもここで確認できます</li>
+        </ul>
+      </section>
+
+      <section class="window browser">
+        <div class="toolbar">
+          <div class="address">your-team.slite.com</div>
+          <div class="action">
+            <img src="../../icons/icon.svg" alt="" />
+            <span class="badge">OFF</span>
+          </div>
+        </div>
+        <div class="page"><b></b><b></b><b></b></div>
+        <div class="popup">
+          <iframe src="../../dist/store-preview/popup.html?paused=1" title="Slime"></iframe>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

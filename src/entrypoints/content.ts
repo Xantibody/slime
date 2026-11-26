@@ -1,7 +1,12 @@
 // Content script: injects inject.js into the page context and relays the
 // stored settings to it
-import { publishEmacsKeybind } from "../settings/page-channel.ts";
-import { EMACS_KEYBIND_STORAGE_KEY, emacsKeybindFrom } from "../settings/settings.ts";
+import { EMACS_KEYBIND, PAUSED, publish } from "../settings/page-channel.ts";
+import {
+  EMACS_KEYBIND_STORAGE_KEY,
+  PAUSED_STORAGE_KEY,
+  emacsKeybindFrom,
+  pausedFrom,
+} from "../settings/settings.ts";
 
 const script = document.createElement("script");
 script.src = browser.runtime.getURL("inject.js");
@@ -10,15 +15,19 @@ script.addEventListener("load", () => {
 });
 (document.head ?? document.documentElement).append(script);
 
-async function relayEmacsKeybind(): Promise<void> {
-  publishEmacsKeybind(emacsKeybindFrom(await browser.storage.local.get(EMACS_KEYBIND_STORAGE_KEY)));
+const KEYS = [PAUSED_STORAGE_KEY, EMACS_KEYBIND_STORAGE_KEY];
+
+async function relaySettings(): Promise<void> {
+  const stored = await browser.storage.local.get(KEYS);
+  publish(PAUSED, pausedFrom(stored));
+  publish(EMACS_KEYBIND, emacsKeybindFrom(stored));
 }
 
-// Storage is the only source of the setting: read it once for this page, and
-// again whenever the popup changes it, in whichever tab that happens
-void relayEmacsKeybind();
+// Storage is the only source of the settings: read them once for this page,
+// and again whenever the popup changes one, in whichever tab that happens
+void relaySettings();
 browser.storage.onChanged.addListener((changes, areaName) => {
-  if (areaName === "local" && Object.hasOwn(changes, EMACS_KEYBIND_STORAGE_KEY)) {
-    void relayEmacsKeybind();
+  if (areaName === "local" && KEYS.some((key) => Object.hasOwn(changes, key))) {
+    void relaySettings();
   }
 });

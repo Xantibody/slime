@@ -74,6 +74,8 @@ check("composing Enter keeps the row title", fixed["rowTitleAfterComposingEnter"
 check("plain Enter still ends editing", fixed["rowTitleAfterPlainEnter"], "blurred");
 check("composing text survives the stale query", fixed["searchDuringComposition"], "k");
 check("the page writes the input again afterwards", fixed["searchAfterComposition"], "");
+check("pausing stands the fixes down", fixed["rowTitleWhilePaused"], "blurred");
+check("resuming brings them back", fixed["rowTitleAfterResume"], "focused");
 
 browser("close");
 

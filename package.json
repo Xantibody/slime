@@ -10,13 +10,14 @@
     "build:chrome": "node --experimental-strip-types build/main.ts chrome",
     "build:firefox": "node --experimental-strip-types build/main.ts firefox",
     "typecheck": "tsc --noEmit",
-    "lint": "oxlint src build e2e vitest.config.ts",
-    "lint:comments": "typos && vale src build e2e vitest.config.ts flake.nix .github .oxlintrc.json knip.jsonc package.json pnpm-workspace.yaml tsconfig.json typos.toml",
+    "lint": "oxlint src build e2e store vitest.config.ts",
+    "lint:comments": "typos && vale src build e2e store vitest.config.ts flake.nix .github .oxlintrc.json knip.jsonc package.json pnpm-workspace.yaml tsconfig.json typos.toml",
     "knip": "knip",
     "fmt": "treefmt",
     "fmt:check": "treefmt --ci",
     "package:source": "git archive -o dist/slime-source-v${VERSION:?}.zip HEAD",
     "e2e": "pnpm build && node --experimental-strip-types e2e/run.ts",
+    "store:render": "pnpm build && node --experimental-strip-types store/render.ts",
     "check": "pnpm fmt:check && pnpm lint && pnpm lint:comments && pnpm typecheck && pnpm knip && pnpm test:run"
   },
   "devDependencies": {
