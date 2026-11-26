@@ -7,8 +7,8 @@ what it is allowed to call.
 ```
 src/
   entrypoints/          what the browser runs; wiring only
-    page.ts             Slite's page context, bundled as page.js
-    content.ts          content script: injects page.js, relays settings
+    page.ts             content script in the page's world (MAIN), as page.js
+    content.ts          content script in the isolated world: relays settings
     popup/              the toolbar popup: version and the pause switch
     options/            the other settings, from the icon's right-click menu
     background/         chrome.ts (declarativeContent), firefox.ts (tabs)
@@ -58,16 +58,21 @@ flowchart LR
   content -- attribute + event --> page[page script]
 ```
 
-The page script cannot call extension APIs, so the content script relays the
+Both are content scripts declared in the manifest at `document_start`. The
+page script runs in the page's own world (`world: "MAIN"`) so it can reach
+Slate's editor on the page's global object, and a script there cannot call
+extension APIs; so the content script, in the isolated world, relays the
 value through a DOM attribute and a notification event
 (`settings/page-channel.ts`). The page reads the attribute when it starts as
-well as on each event, because it may run before or after the content script
-has read storage.
+well as on each event, because no browser promises which of the two runs
+first, nor whether the content script has read storage by then.
 
 ## Browser differences
 
-Every script calls `browser.*`, which Firefox has always had and Chrome has
-had since 148 (`minimum_chrome_version` in the manifest). What still differs
+Every extension-world script calls `browser.*`, which Firefox has always had
+and Chrome has had since 148 (`minimum_chrome_version` in the manifest).
+Firefox runs a manifest content script in the MAIN world from 128
+(`strict_min_version`); Chrome has done so since 111. What still differs
 is chosen at build time: the manifest fields in `build/manifest.ts`, and the
 background script, which uses `declarativeContent` on Chrome and the `tabs`
 API on Firefox.

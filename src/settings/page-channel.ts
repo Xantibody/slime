@@ -4,11 +4,12 @@
 // `detail` across the content-script / page boundary, so the payload rides on
 // a DOM attribute and the event is only a notification.
 //
-// The attribute also outlives the event: the page script is injected through
-// a `<script>` tag and may run before or after the content script has read
-// storage, so a subscriber reads the attribute once on start and again on
-// every event. A missing attribute reads as off, so every setting carried
-// here must default to off.
+// The attribute also outlives the event: the page script and the content
+// script are separate content scripts in separate worlds, and no browser
+// promises which one runs first, let alone whether the page script starts
+// before or after the content script has read storage. So a subscriber reads
+// the attribute once on start and again on every event. A missing attribute
+// reads as off, so every setting carried here must default to off.
 
 /** One on/off setting as it travels to the page. */
 export interface PageSetting {

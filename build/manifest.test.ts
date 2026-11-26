@@ -74,15 +74,26 @@ describe(createBaseManifest, () => {
     });
   });
 
-  it("should have content_scripts for slite.com", () => {
-    const { content_scripts } = createBaseManifest(VERSION);
-
-    expect(content_scripts).toHaveLength(1);
-    expect(content_scripts[0]?.matches).toContain("https://*.slite.com/*");
+  it("should run the settings relay in the isolated world and page.js in the page's world", () => {
+    expect(createBaseManifest(VERSION).content_scripts).toStrictEqual([
+      {
+        matches: ["https://*.slite.com/*"],
+        js: ["content-script.js"],
+        run_at: "document_start",
+      },
+      {
+        matches: ["https://*.slite.com/*"],
+        js: ["page.js"],
+        run_at: "document_start",
+        world: "MAIN",
+      },
+    ]);
   });
 
-  it("should expose page.js as a web accessible resource", () => {
-    expect(createBaseManifest(VERSION).web_accessible_resources[0]?.resources).toContain("page.js");
+  it("should expose no file to web pages", () => {
+    const manifest: Record<string, unknown> = { ...createBaseManifest(VERSION) };
+
+    expect(manifest["web_accessible_resources"]).toBeUndefined();
   });
 });
 
@@ -144,7 +155,12 @@ describe(generateFirefoxManifest, () => {
     const { gecko } = generateFirefoxManifest(VERSION).browser_specific_settings;
 
     expect(gecko.id).toBe("slime@example.com");
-    expect(gecko.strict_min_version).toBeDefined();
+  });
+
+  it("should require Firefox 128, the first release with MAIN-world content scripts", () => {
+    const { gecko } = generateFirefoxManifest(VERSION).browser_specific_settings;
+
+    expect(gecko.strict_min_version).toBe("128.0");
   });
 
   it("should declare that no data is collected, as AMO requires of new add-ons", () => {

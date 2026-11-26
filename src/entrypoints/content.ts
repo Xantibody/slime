@@ -1,5 +1,5 @@
-// Content script: injects page.js into the page context and relays the
-// stored settings to it
+// Content script: relays the stored settings to page.js, which the manifest
+// runs in the page's own world beside this one
 import { EMACS_KEYBIND, PAUSED, publish } from "../settings/page-channel.ts";
 import {
   EMACS_KEYBIND_STORAGE_KEY,
@@ -7,13 +7,6 @@ import {
   emacsKeybindFrom,
   pausedFrom,
 } from "../settings/settings.ts";
-
-const script = document.createElement("script");
-script.src = browser.runtime.getURL("page.js");
-script.addEventListener("load", () => {
-  script.remove();
-});
-(document.head ?? document.documentElement).append(script);
 
 const KEYS = [PAUSED_STORAGE_KEY, EMACS_KEYBIND_STORAGE_KEY];
 

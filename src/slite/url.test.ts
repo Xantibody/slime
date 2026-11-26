@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { SLITE_HOST_SUFFIX, SLITE_MATCH_PATTERN, isSliteUrl } from "./url.ts";
 
 describe(isSliteUrl, () => {
@@ -17,23 +17,9 @@ describe(isSliteUrl, () => {
     { url: "https://acme.slite.com.example.com/", reason: "a host that only starts like Slite" },
     { url: "https://example.com/?next=https://acme.slite.com/", reason: "Slite in the query only" },
     { url: "about:blank", reason: "a browser page" },
+    { url: "not a url", reason: "a string that is not a URL" },
   ])("should reject $reason", ({ url }) => {
     expect(isSliteUrl(url)).toBe(false);
-  });
-});
-
-describe("isSliteUrl on Firefox before 115", () => {
-  const { canParse } = URL;
-
-  afterEach(() => {
-    URL.canParse = canParse;
-  });
-
-  it("should not need URL.canParse, which those versions lack", () => {
-    Reflect.deleteProperty(URL, "canParse");
-
-    expect(isSliteUrl("https://acme.slite.com/")).toBe(true);
-    expect(isSliteUrl("not a url")).toBe(false);
   });
 });
 

@@ -29,10 +29,7 @@ export interface BaseManifest {
     readonly matches: readonly string[];
     readonly js: readonly string[];
     readonly run_at: "document_start";
-  }[];
-  readonly web_accessible_resources: readonly {
-    readonly resources: readonly string[];
-    readonly matches: readonly string[];
+    readonly world?: "MAIN";
   }[];
 }
 
@@ -105,6 +102,14 @@ export function createBaseManifest(version: string): BaseManifest {
         js: ["content-script.js"],
         run_at: "document_start",
       },
+      // The page script reaches Slate's editor on the page's own global, which
+      // the isolated world cannot see
+      {
+        matches: [SLITE_MATCH_PATTERN],
+        js: ["page.js"],
+        run_at: "document_start",
+        world: "MAIN",
+      },
     ],
     // The browser picks the text from _locales (build/locales.ts) by the UI
     // language, falling back to English
@@ -115,12 +120,6 @@ export function createBaseManifest(version: string): BaseManifest {
     manifest_version: 3,
     name: "Slime",
     version: assertVersion(version),
-    web_accessible_resources: [
-      {
-        resources: ["page.js"],
-        matches: [SLITE_MATCH_PATTERN],
-      },
-    ],
   };
 }
 
@@ -149,7 +148,9 @@ export function generateFirefoxManifest(version: string): FirefoxManifest {
         // listing to its ID for good. release.yml, update-flake-amo.yml and
         // flake.nix repeat the same string
         id: "slime@example.com",
-        strict_min_version: "109.0",
+        // The first release that runs a manifest content script in the MAIN
+        // world, which is how page.js gets into the page
+        strict_min_version: "128.0",
         // AMO refuses new add-ons that do not declare this. The extension
         // only rewrites the editor's DOM and never sends anything anywhere
         data_collection_permissions: { required: ["none"] },

@@ -4,7 +4,7 @@
 
 Browser extension that fixes the Japanese IME double-display bug in Slite editor.
 
-Supports **Chrome** and **Edge** 148 or later, and **Firefox**.
+Supports **Chrome** and **Edge** 148 or later, and **Firefox** 128 or later.
 
 ## Problem
 
@@ -97,8 +97,8 @@ passes it to the page, so it does not move the cursor there.
 behind it.
 
 - `src/entrypoints/` - What the browser runs; each file only wires the parts below
-  - `page.ts` - Page-context entry point, bundled as `page.js`
-  - `content.ts` - Content script that injects `page.js` into the page context
+  - `page.ts` - Page-context entry point, bundled as `page.js` and run by the manifest in the page's own world (`world: "MAIN"`)
+  - `content.ts` - Content script in the isolated world that relays the stored settings to `page.js`
   - `popup/` - Version and the pause switch
   - `options/` - The other settings page (Emacs keybindings), opened from the toolbar icon's right-click menu
   - `background/chrome.ts` - Chrome background script (declarativeContent API)
