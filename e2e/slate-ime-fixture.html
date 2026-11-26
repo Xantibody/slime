@@ -14,7 +14,7 @@
       into the mark placeholder, then on commit Slate inserts it as a real leaf
       but leaves its copy inside the placeholder.
 
-      Open with ?fix=1 to load the built inject.js, ?fix=0 to see the raw bug.
+      Open with ?fix=1 to load the built page.js, ?fix=0 to see the raw bug.
     -->
     <div id="editor" contenteditable="true" data-slate-editor="true">
       <div class="slite-editor-block unstyled-block" data-type="unstyled">
@@ -135,7 +135,7 @@
 
       if (new URLSearchParams(location.search).get("fix") === "1") {
         const script = document.createElement("script");
-        script.src = "../dist/chrome/inject.js";
+        script.src = "../dist/chrome/page.js";
         document.head.append(script);
       }
     </script>
