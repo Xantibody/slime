@@ -24,6 +24,7 @@ export interface BaseManifest {
     readonly default_popup: string;
     readonly default_icon: IconSet;
   };
+  readonly options_ui: { readonly page: string; readonly open_in_tab: boolean };
   readonly content_scripts: readonly {
     readonly matches: readonly string[];
     readonly js: readonly string[];
@@ -91,6 +92,13 @@ export function createBaseManifest(version: string): BaseManifest {
       default_popup: "popup.html",
       default_title: "Slime",
     },
+    // Settings most users never need stay out of the popup. Chrome lists this
+    // page as Options in the toolbar icon's right-click menu; Firefox gets its
+    // own menu item from the background
+    options_ui: {
+      page: "options.html",
+      open_in_tab: true,
+    },
     content_scripts: [
       {
         matches: [SLITE_MATCH_PATTERN],
@@ -147,6 +155,8 @@ export function generateFirefoxManifest(version: string): FirefoxManifest {
         data_collection_permissions: { required: ["none"] },
       },
     },
-    permissions: ["tabs", "storage"],
+    // menus: Firefox's toolbar button has no Options item, so the background
+    // adds one that opens options.html
+    permissions: ["tabs", "storage", "menus"],
   };
 }

@@ -49,6 +49,7 @@ const CONFIGS: Readonly<Record<Target, TargetConfig>> = {
 
 const STATIC_FILES: readonly (readonly [source: string, destination: string])[] = [
   ["src/entrypoints/popup/index.html", "popup.html"],
+  ["src/entrypoints/options/index.html", "options.html"],
   ["icons/icon-16.png", "icons/icon-16.png"],
   ["icons/icon-32.png", "icons/icon-32.png"],
   ["icons/icon-48.png", "icons/icon-48.png"],
@@ -84,6 +85,7 @@ async function buildTarget(target: Target): Promise<void> {
       inject: "src/entrypoints/page.ts",
       "content-script": "src/entrypoints/content.ts",
       popup: "src/entrypoints/popup/main.ts",
+      options: "src/entrypoints/options/main.ts",
       background,
     },
     distDir,

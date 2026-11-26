@@ -9,7 +9,8 @@ src/
   entrypoints/          what the browser runs; wiring only
     page.ts             Slite's page context, bundled as inject.js
     content.ts          content script: injects inject.js, relays settings
-    popup/              the toolbar popup
+    popup/              the toolbar popup: version and the pause switch
+    options/            the other settings, from the icon's right-click menu
     background/         chrome.ts (declarativeContent), firefox.ts (tabs)
   feature/              what Slime does
     fix/                the IME fixes, one per cause in root-causes.md

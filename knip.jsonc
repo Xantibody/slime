@@ -8,6 +8,7 @@
     "src/entrypoints/page.ts",
     "src/entrypoints/content.ts",
     "src/entrypoints/popup/main.ts",
+    "src/entrypoints/options/main.ts",
     "src/entrypoints/background/chrome.ts",
     "src/entrypoints/background/firefox.ts",
     "e2e/verify.js",

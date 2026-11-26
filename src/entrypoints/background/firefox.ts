@@ -50,3 +50,17 @@ browser.storage.onChanged.addListener((changes, areaName) => {
     void showPause();
   }
 });
+
+// Firefox's toolbar button has no Options item of its own (Chrome adds one
+// from options_ui), so the other settings get one here. Menu items persist
+// across event page restarts, hence onInstalled rather than every start
+const OPTIONS_MENU_ID = "options";
+
+browser.runtime.onInstalled.addListener(() => {
+  browser.menus.create({ id: OPTIONS_MENU_ID, title: "その他の設定", contexts: ["action"] });
+});
+browser.menus.onClicked.addListener((info) => {
+  if (info.menuItemId === OPTIONS_MENU_ID) {
+    void browser.runtime.openOptionsPage();
+  }
+});

@@ -77,7 +77,7 @@ shows the installed version.
 
 ### Emacs Keybindings (Optional)
 
-Off by default. Turn them on in the popup for Emacs-style cursor movement:
+Off by default. Turn them on in the other settings page for Emacs-style cursor movement: right-click the toolbar icon and choose Options (Chrome, Edge) or その他の設定 (Firefox).
 
 | Shortcut | Action                    |
 | -------- | ------------------------- |
@@ -99,7 +99,8 @@ behind it.
 - `src/entrypoints/` - What the browser runs; each file only wires the parts below
   - `page.ts` - Page-context entry point, bundled as `inject.js`
   - `content.ts` - Content script that injects `inject.js` into the page context
-  - `popup/` - Version, the pause switch and the Emacs keybindings switch
+  - `popup/` - Version and the pause switch
+  - `options/` - The other settings page (Emacs keybindings), opened from the toolbar icon's right-click menu
   - `background/chrome.ts` - Chrome background script (declarativeContent API)
   - `background/firefox.ts` - Firefox background script (tabs API)
 - `src/feature/fix/` - The fixes for each duplicate-text bug ([docs/root-causes.md](docs/root-causes.md))
